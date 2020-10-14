@@ -5,16 +5,20 @@ $global:DevFolder = "<DevFolder>";
 $global:Workspace = "$DevFolder/Workspace";
 $global:Playground = "$DevFolder/Playground";
 $global:GithubRepos = "$DevFolder/Github";
-$global:SharedData = "$DevFolder/SharedData";
 $global:ToolsFolder = "<ToolsFolder>";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:TempDirs = "$Desktop/tempDirs";
 #endregion
 
 #region Load scripts & modules
-function LoadScripts([string] $folder) {
+$foldersToLoadScriptsFrom = @(
+    "$MyScriptsRoot/powershell/share",
+    "$MyScriptsRoot/powershell/$([System.Environment]::OSVersion.Platform.ToString().ToLower())"
+);
+foreach ($folder in $foldersToLoadScriptsFrom) {
     foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {
         try {
+            Write-Debug "Loading $($scriptPath.FullName)";
             . $scriptPath.FullName;
         }
         catch {
@@ -22,8 +26,6 @@ function LoadScripts([string] $folder) {
         }
     }
 }
-LoadScripts "$MyScriptsRoot/powershell/share";
-LoadScripts "$MyScriptsRoot/powershell/$([System.Environment]::OSVersion.Platform.ToString().ToLower())";
 #endregion
 
 #region Settings

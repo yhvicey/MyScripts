@@ -1,6 +1,7 @@
 function AddToPath([string] $folder) {
     $normalizedFolderPath = [System.IO.Path]::GetFullPath($folder);
     if (-not ($env:PATH.Contains($normalizedFolderPath))) {
+        Write-Debug "Adding $normalizedFolderPath to PATH";
         $env:PATH = "$($env:PATH)$([System.IO.Path]::PathSeparator)$normalizedFolderPath";
     }
 }

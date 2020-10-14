@@ -10,10 +10,6 @@ function cdp {
     Push-Location $global:Playground;
 }
 
-function cds {
-    Push-Location $global:SharedData;
-}
-
 function cdt {
     Push-Location $global:TempDirs;
 }
