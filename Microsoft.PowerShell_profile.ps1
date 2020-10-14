@@ -9,20 +9,21 @@ $global:SharedData = "$DevFolder/SharedData";
 $global:ToolsFolder = "<ToolsFolder>";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:TempDirs = "$Desktop/tempDirs";
-# Files
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1";
 #endregion
 
 #region Load scripts & modules
-foreach ($scriptPath in (Get-ChildItem -Recurse "$MyScriptsRoot/powershell" -Filter "*.ps1")) {
-    try {
-        . $scriptPath.FullName;
-    }
-    catch {
-        Write-Warning "Failed to load $($scriptPath.FullName), error: $_";
+function LoadScripts([string] $folder) {
+    foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {
+        try {
+            . $scriptPath.FullName;
+        }
+        catch {
+            Write-Warning "Failed to load $($scriptPath.FullName), error: $_";
+        }
     }
 }
-Import-Module $ChocolateyProfile; # Chocolatey
+LoadScripts "$MyScriptsRoot/powershell/share";
+LoadScripts "$MyScriptsRoot/powershell/$([System.Environment]::OSVersion.Platform.ToString().ToLower())";
 #endregion
 
 #region Settings

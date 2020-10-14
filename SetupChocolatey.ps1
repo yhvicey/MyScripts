@@ -1,9 +1,17 @@
-if (-not $global:ToolsFolder) {
-    Write-Warning "Environment is not set up yet, please run Setup-Environment.ps1 first.";
-    exit 1;
-}
-
 EnsureAdminPrivileges;
+
+#region Collect input
+if (-not $ToolsFolder) {
+    $ToolsFolder = Read-Host -Prompt "Input chocolatey tools folder path [D:/Tools]";
+}
+if (-not $ToolsFolder) {
+    $ToolsFolder = "D:/Tools";
+}
+$ToolsFolder = $ToolsFolder.TrimEnd("/").TrimEnd("\");
+if (-not (Test-Path $ToolsFolder)) {
+    New-Item $ToolsFolder -ItemType Directory | Out-Null;
+}
+#endregion
 
 $ToolsFolder = $global:ToolsFolder.TrimEnd("/").TrimEnd("\");
 if (-not (Test-Path $ToolsFolder)) {
@@ -24,4 +32,4 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-& $chocoExe install "$PSScriptRoot/misc/tools.config";
+& $chocoExe install "$PSScriptRoot/powershell/win32nt/tools.config";

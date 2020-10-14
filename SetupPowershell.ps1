@@ -43,18 +43,6 @@ foreach ($module in (Get-Content "$PSScriptRoot/misc/modules")) {
 }
 #endregion
 
-#region Setup paths
-foreach ($path in (Get-Content "$PSScriptRoot/misc/paths")) {
-    if (-not ($env:PATH.Contains($path))) {
-        Write-Host "Adding $path to user's PATH";
-        [Environment]::SetEnvironmentVariable(
-            "PATH",
-            [Environment]::GetEnvironmentVariable("PATH", "User") + ";$path",
-            "User")
-    }
-}
-#endregion
-
 #region Post setup
 Write-Host "Environment setup done."
 . $PROFILE;
