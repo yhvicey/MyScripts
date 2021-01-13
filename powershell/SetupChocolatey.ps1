@@ -13,11 +13,6 @@ if (-not (Test-Path $ToolsFolder)) {
 }
 #endregion
 
-$ToolsFolder = $global:ToolsFolder.TrimEnd("/").TrimEnd("\");
-if (-not (Test-Path $ToolsFolder)) {
-    New-Item $ToolsFolder -ItemType Directory | Out-Null;
-}
-
 # Install choco.exe if not installed
 $chocoExe = (Get-Command "choco" -ErrorAction SilentlyContinue).Path;
 if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
