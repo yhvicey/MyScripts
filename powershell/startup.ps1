@@ -12,8 +12,8 @@ $global:TempDirs = "$Desktop/tempDirs";
 
 #region Load scripts & modules
 $foldersToLoadScriptsFrom = @(
-    "$MyScriptsRoot/powershell/share",
-    "$MyScriptsRoot/powershell/$([System.Environment]::OSVersion.Platform.ToString().ToLower())"
+    "$MyScriptsRoot/share",
+    "$MyScriptsRoot/$([System.Environment]::OSVersion.Platform.ToString().ToLower())"
 );
 foreach ($folder in $foldersToLoadScriptsFrom) {
     foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {

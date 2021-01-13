@@ -1,3 +1,5 @@
+#!/usr/bin/env pwsh
+
 #region Collect input
 if (-not $DevFolder) {
     $DevFolder = Read-Host -Prompt "Input development folder path [D:/Dev]";
@@ -22,20 +24,26 @@ if (-not (Test-Path $ToolsFolder)) {
 #endregion
 
 #region Setup powershell
+$startupScript = "~/startup.ps1"
 # Install profile
-$profileContent = Get-Content "$PSScriptRoot/Microsoft.PowerShell_profile.ps1" -Raw;
-$profileContent = $profileContent.Replace("<MyScriptsRoot>", $PSScriptRoot);
-$profileContent = $profileContent.Replace("<DevFolder>", $DevFolder);
-$profileContent = $profileContent.Replace("<ToolsFolder>", $ToolsFolder);
-if (-not (Test-Path $PROFILE)) {
+$startupScriptContent = Get-Content "$PSScriptRoot/startup.ps1" -Raw;
+$startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", $PSScriptRoot);
+$startupScriptContent = $startupScriptContent.Replace("<DevFolder>", $DevFolder);
+$startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFolder);
+$setupFlag = "MY_SCRIPTS_SETUP_DONE"
+$startupScriptContent | Out-File -NoNewline -Force $startupScript;
+# Setup profile
+if (Test-Path $PROFILE) {
+    Get-Content $PROFILE | Where-Object { -not $_.Contains($setupFlag) } | Out-File -NoNewline -Force $PROFILE;
+} else {
     New-Item $PROFILE -ItemType File -Force;
 }
-$profileContent | Out-File -NoNewline -Force $PROFILE;
+Write-Output ". $startupScript # $setupFlag" >> $PROFILE;
 # Install modules
 if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"
 }
-foreach ($module in (Get-Content "$PSScriptRoot/misc/modules")) {
+foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
     if ($null -eq (Get-InstalledModule $module)) {
         Write-Host "Installing $module...";
         Install-Module $module;
