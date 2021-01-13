@@ -27,4 +27,4 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-& $chocoExe install "$PSScriptRoot/powershell/win32nt/tools.config";
+& $chocoExe install "$PSScriptRoot/win32nt/tools.config";
