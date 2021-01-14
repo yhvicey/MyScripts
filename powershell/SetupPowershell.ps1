@@ -35,7 +35,8 @@ $startupScriptContent | Out-File -NoNewline -Force $startupScript;
 # Setup profile
 if (Test-Path $PROFILE) {
     Get-Content $PROFILE | Where-Object { -not $_.Contains($setupFlag) } | Out-File -NoNewline -Force $PROFILE;
-} else {
+}
+else {
     New-Item $PROFILE -ItemType File -Force;
 }
 Write-Output ". $startupScript # $setupFlag" >> $PROFILE;
@@ -44,7 +45,7 @@ if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"
 }
 foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
-    if ($null -eq (Get-InstalledModule $module)) {
+    if ($null -eq (Get-InstalledModule $module -ErrorAction SilentlyContinue)) {
         Write-Host "Installing $module...";
         Install-Module $module;
     }
@@ -63,5 +64,8 @@ if (-not (Test-Path $Playground)) {
 }
 if (-not (Test-Path $GithubRepos)) {
     New-Item $GithubRepos -ItemType Directory | Out-Null;
+}
+if (-not (Test-Path $TempDirs)) {
+    New-Item $TempDirs -ItemType Directory | Out-Null;
 }
 #endregion
