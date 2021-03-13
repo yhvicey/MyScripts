@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #region Global variables
 # Folders
 export MY_SCRIPTS_ROOT="<MY_SCRIPTS_ROOT>";
@@ -14,14 +12,18 @@ export TEMP_DIRS="$HOME/tempDirs";
 export CYAN='\033[36m'
 export YELLOW='\033[33m'
 export RESET='\033[0m'
+
+# Others
+export CURRENT_SHELL=$(echo $SHELL | sed "s/.*\/\(.*\)$/\1/g")
 #endregion
 
 #region Load scripts & modules
 FOLDERS_TO_LOAD_SCRIPTS_FROM=(
     "$MY_SCRIPTS_ROOT/share"
+    "$MY_SCRIPTS_ROOT/$(echo $CURRENT_SHELL | awk '{print tolower($0)}')"
 );
 for folder in $FOLDERS_TO_LOAD_SCRIPTS_FROM; do
-    for scriptPath in $(find $folder -type f -name "*.sh"); do
+    [[ -d $folder ]] && for scriptPath in $(find $folder -type f -name "*.sh"); do
         {
             [[ ! -z "$MYSCRIPT_DEBUG" ]] && echo "Loading $scriptPath"
             source $scriptPath
@@ -33,13 +35,6 @@ done
 #endregion
 
 #region Settings
-# Shell
-if [[ $SHELL =~ "zsh" ]]; then
-    unsetopt beep
-else
-    set bell-style none # No bell
-fi
-
 # Tools
 if which dotnet-suggest 1>/dev/null; then
     # dotnet-suggest
