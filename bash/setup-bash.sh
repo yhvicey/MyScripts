@@ -64,34 +64,48 @@ done
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
 # oh-my-zsh
 OH_MY_ZSH_ROOT=~/.oh-my-zsh
-[[ -d $OH_MY_ZSH_ROOT ]] || {
+[[ -d $OH_MY_ZSH_ROOT ]] && {
+    pushd $OH_MY_ZSH_ROOT
+    git pull
+    popd
+} || {
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     chsh -s $(which zsh)
 }
+
 # oh-my-posh
 OH_MY_POSH_BIN=/usr/bin/oh-my-posh
-[[ -f $OH_MY_POSH_BIN ]] || {
-    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O $OH_MY_POSH_BIN
-    chmod +x $OH_MY_POSH_BIN
-}
+[[ -f $OH_MY_POSH_BIN ]] && rm $OH_MY_POSH_BIN
+wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O $OH_MY_POSH_BIN
+chmod +x $OH_MY_POSH_BIN
+
 OH_MY_POSH_ROOT=~/.posh/themes
-[[ -d $OH_MY_POSH_ROOT ]] || {
-    mkdir -p $OH_MY_POSH_ROOT
-    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O $OH_MY_POSH_ROOT/themes.zip
-    unzip $OH_MY_POSH_ROOT/themes.zip -d $OH_MY_POSH_ROOT
-    chmod u+rw $OH_MY_POSH_ROOT/*.json
-    rm $OH_MY_POSH_ROOT/themes.zip
-}
+[[ -d $OH_MY_POSH_ROOT ]] && rm -r $OH_MY_POSH_ROOT
+mkdir -p $OH_MY_POSH_ROOT
+wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O $OH_MY_POSH_ROOT/themes.zip
+unzip $OH_MY_POSH_ROOT/themes.zip -d $OH_MY_POSH_ROOT
+chmod u+rw $OH_MY_POSH_ROOT/*.json
+rm $OH_MY_POSH_ROOT/themes.zip
+
 # fzf
 FZF_ROOT=~/.fzf
-[[ -d $FZF_ROOT ]] || {
+[[ -d $FZF_ROOT ]] && {
+    pushd $FZF_ROOT
+    git pull
+    popd
+} || {
     git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_ROOT
     $FZF_ROOT/install --all
 }
+
 # zsh-z
 ZSH_Z_ROOT=$ZSH_CUSTOM/plugins/zsh-z
-[[ -d $ZSH_Z_ROOT ]] || {
-    git clone https://github.com/agkozak/zsh-z $ZSH_Z_ROOT
+[[ -d $ZSH_Z_ROOT ]] && {
+    pushd $ZSH_Z_ROOT
+    git pull
+    popd
+} || {
+    git clone --depth 1 https://github.com/agkozak/zsh-z $ZSH_Z_ROOT
     [[ -z "$(grep '^plugins=(.*zsh-z.*)' ~/.zshrc)" ]] && {
         sed -i 's/^plugins=(\(.*\))/plugins=(\1 zsh-z)/g' ~/.zshrc
     }
