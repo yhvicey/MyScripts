@@ -1,3 +1,10 @@
+function ensure-admin-privileges {
+    if [[ $(id -u) -ne 0 ]]; then
+        echo "Insufficient permissions to run this script. Rerun as root user."
+        return
+    fi
+}
+
 function start-process-or-path {
     if [[ $# -eq 0 ]]; then
         PATH_TO_START=$(/bin/wslpath -w $PWD)

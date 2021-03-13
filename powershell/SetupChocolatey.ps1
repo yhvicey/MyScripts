@@ -1,3 +1,5 @@
+$Script:ErrorActionPreference="Stop"
+
 EnsureAdminPrivileges;
 
 #region Collect input

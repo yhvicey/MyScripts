@@ -8,8 +8,14 @@ function AddToPath([string] $folder) {
 
 function EnsureAdminPrivileges {
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again."
-        exit;
+        throw "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again.";
+    }
+}
+
+function EnsureOS([string] $os) {
+    $currentOs = [System.Environment]::OSVersion.Platform.ToString();
+    if ($currentOs.ToLower() -ne $os.ToLower()) {
+        throw "OS not matched. Requires $os but got $currentOs";
     }
 }
 
