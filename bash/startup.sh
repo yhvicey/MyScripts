@@ -23,7 +23,7 @@ FOLDERS_TO_LOAD_SCRIPTS_FROM=(
 for folder in $FOLDERS_TO_LOAD_SCRIPTS_FROM; do
     for scriptPath in $(find $folder -type f -name "*.sh"); do
         {
-            echo "Loading $scriptPath"
+            [[ ! -z "$MYSCRIPT_DEBUG" ]] && echo "Loading $scriptPath"
             source $scriptPath
         } || {
             echo -e "${YELLOW}Failed to load $scriptPath.$RESET"
@@ -34,7 +34,11 @@ done
 
 #region Settings
 # Shell
-set bell-style none # No bell
+if [[ $SHELL =~ "zsh" ]]; then
+    unsetopt beep
+else
+    set bell-style none # No bell
+fi
 
 # Tools
 if which dotnet-suggest 1>/dev/null; then

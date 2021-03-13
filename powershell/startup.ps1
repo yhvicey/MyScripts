@@ -51,5 +51,5 @@ if (Get-Command "dotnet-suggest" -ErrorAction SilentlyContinue) {
     $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.0"
 }
 # Modules
-Set-Theme Agnoster;
+Set-PoshPrompt -Theme Agnoster;
 #endregion

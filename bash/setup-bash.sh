@@ -25,9 +25,12 @@ if [[ ! -d $TOOLS_FOLDER ]]; then
 fi
 #endregion
 
-#region Setup bash
+#region Setup shells
 SCRIPT_ROOT=$(realpath $(dirname "$0"))
-PROFILE=~/.bashrc
+TARGET_SHELLS=(
+    "bash"
+    "zsh"
+)
 STARTUP_SCRIPT=~/.startup
 # Install startup script
 STARTUP_SCRIPT_CONTENT=$(<"$SCRIPT_ROOT/startup.sh")
@@ -36,13 +39,63 @@ STARTUP_SCRIPT_CONTENT=${STARTUP_SCRIPT_CONTENT//<DEV_FOLDER>/$DEV_FOLDER};
 STARTUP_SCRIPT_CONTENT=${STARTUP_SCRIPT_CONTENT//<TOOLS_FOLDER>/$TOOLS_FOLDER};
 SETUP_FLAG="MY_SCRIPTS_SETUP_DONE"
 echo "$STARTUP_SCRIPT_CONTENT" > $STARTUP_SCRIPT
-# Setup profile
-if [[ -f $PROFILE ]]; then
-    sed -i "/.*$SETUP_FLAG/d" $PROFILE
-else
-    touch $PROFILE
-fi
-echo "source $STARTUP_SCRIPT # $SETUP_FLAG" >> $PROFILE
+# Setup profiles
+for TARGET_SHELL in ${TARGET_SHELLS[@]}; do
+    PROFILE="$HOME/.${TARGET_SHELL}rc"
+    if [[ -f $PROFILE ]]; then
+        sed -i "/.*$SETUP_FLAG/d" $PROFILE
+        sed -i "/.*oh-my-posh --init.*/d" $PROFILE
+    else
+        touch $PROFILE
+    fi
+    echo "source $STARTUP_SCRIPT # $SETUP_FLAG" >> $PROFILE
+    echo "eval \"\$(oh-my-posh --init --shell $TARGET_SHELL --config ~/.poshthemes/agnoster.omp.json)\"" >> $PROFILE
+done
+# Install modules
+for MODULE in $(cat $SCRIPT_ROOT/modules); do
+    {
+        dpkg -s $MODULE 2>/dev/null | grep "ok installed" > /dev/null
+    } || {
+        echo "Installing $MODULE...";
+        apt install -y $MODULE
+    }
+done
+# Setup modules
+ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+# oh-my-zsh
+OH_MY_ZSH_ROOT=~/.oh-my-zsh
+[[ -d $OH_MY_ZSH_ROOT ]] || {
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    chsh -s $(which zsh)
+}
+# oh-my-posh
+OH_MY_POSH_BIN=/usr/bin/oh-my-posh
+[[ -f $OH_MY_POSH_BIN ]] || {
+    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O $OH_MY_POSH_BIN
+    chmod +x $OH_MY_POSH_BIN
+}
+OH_MY_POSH_ROOT=~/.posh/themes
+[[ -d $OH_MY_POSH_ROOT ]] || {
+    mkdir -p $OH_MY_POSH_ROOT
+    wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip -O $OH_MY_POSH_ROOT/themes.zip
+    unzip $OH_MY_POSH_ROOT/themes.zip -d $OH_MY_POSH_ROOT
+    chmod u+rw $OH_MY_POSH_ROOT/*.json
+    rm $OH_MY_POSH_ROOT/themes.zip
+}
+# fzf
+FZF_ROOT=~/.fzf
+[[ -d $FZF_ROOT ]] || {
+    git clone --depth 1 https://github.com/junegunn/fzf.git $FZF_ROOT
+    $FZF_ROOT/install --all
+}
+# zsh-z
+ZSH_Z_ROOT=$ZSH_CUSTOM/plugins/zsh-z
+[[ -d $ZSH_Z_ROOT ]] || {
+    git clone https://github.com/agkozak/zsh-z $ZSH_Z_ROOT
+    [[ -z "$(grep '^plugins=(.*zsh-z.*)' ~/.zshrc)" ]] && {
+        sed -i 's/^plugins=(\(.*\))/plugins=(\1 zsh-z)/g' ~/.zshrc
+    }
+}
 #endregion
 
 #region Post setup
