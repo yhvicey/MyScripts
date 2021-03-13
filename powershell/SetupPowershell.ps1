@@ -39,10 +39,11 @@ if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
 foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
     if ($null -eq (Get-InstalledModule $module -ErrorAction SilentlyContinue)) {
         Write-Host "Installing $module...";
-        Install-Module $module;
-    } else {
+        Install-Module $module -Scope CurrentUser;
+    }
+    else {
         Write-Host "Updating $module...";
-        Update-Module -Name $module;
+        Update-Module $module -Scope CurrentUser;
     }
 }
 # Setup profile
