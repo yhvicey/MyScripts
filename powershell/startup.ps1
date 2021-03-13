@@ -8,12 +8,15 @@ $global:GithubRepos = "$DevFolder/Github";
 $global:ToolsFolder = "<ToolsFolder>";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:TempDirs = "$Desktop/tempDirs";
+
+# Others
+$global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 #endregion
 
 #region Load scripts & modules
 $foldersToLoadScriptsFrom = @(
     "$MyScriptsRoot/share",
-    "$MyScriptsRoot/$([System.Environment]::OSVersion.Platform.ToString().ToLower())"
+    "$MyScriptsRoot/$($CurrentOS.ToLower())"
 );
 foreach ($folder in $foldersToLoadScriptsFrom) {
     foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {
