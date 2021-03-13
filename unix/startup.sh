@@ -71,4 +71,6 @@ if which dotnet-suggest 1>/dev/null; then
     _dotnet_bash_register_complete
     export DOTNET_SUGGEST_SCRIPT_VERSION="1.0.1"
 fi
+# Modules
+eval "$(oh-my-posh --init --shell $CURRENT_SHELL --config ~/.poshthemes/agnoster.omp.json)"
 #endregion

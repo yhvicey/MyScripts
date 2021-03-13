@@ -32,14 +32,6 @@ $startupScriptContent = $startupScriptContent.Replace("<DevFolder>", $DevFolder)
 $startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFolder);
 $setupFlag = "MY_SCRIPTS_SETUP_DONE"
 $startupScriptContent | Out-File -NoNewline -Force $startupScript;
-# Setup profile
-if (Test-Path $PROFILE) {
-    Get-Content $PROFILE | Where-Object { -not $_.Contains($setupFlag) } | Out-File -NoNewline -Force $PROFILE;
-}
-else {
-    New-Item $PROFILE -ItemType File -Force;
-}
-Write-Output ". $startupScript # $setupFlag" >> $PROFILE;
 # Install modules
 if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"
@@ -53,6 +45,14 @@ foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
         Update-Module -Name $module;
     }
 }
+# Setup profile
+if (Test-Path $PROFILE) {
+    Get-Content $PROFILE | Where-Object { -not $_.Contains($setupFlag) } | Out-File -NoNewline -Force $PROFILE;
+}
+else {
+    New-Item $PROFILE -ItemType File -Force;
+}
+Write-Output ". $startupScript # $setupFlag" >> $PROFILE;
 #endregion
 
 #region Post setup
