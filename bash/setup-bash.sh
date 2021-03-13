@@ -53,12 +53,8 @@ for TARGET_SHELL in ${TARGET_SHELLS[@]}; do
 done
 # Install modules
 for MODULE in $(cat $SCRIPT_ROOT/modules); do
-    {
-        dpkg -s $MODULE 2>/dev/null | grep "ok installed" > /dev/null
-    } || {
-        echo "Installing $MODULE...";
-        apt install -y $MODULE
-    }
+    echo "Installing or updating $MODULE...";
+    apt install -y $MODULE
 done
 # Setup modules
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}

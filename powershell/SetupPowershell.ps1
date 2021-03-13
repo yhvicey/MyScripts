@@ -48,6 +48,9 @@ foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
     if ($null -eq (Get-InstalledModule $module -ErrorAction SilentlyContinue)) {
         Write-Host "Installing $module...";
         Install-Module $module;
+    } else {
+        Write-Host "Updating $module...";
+        Update-Module -Name $module;
     }
 }
 #endregion
