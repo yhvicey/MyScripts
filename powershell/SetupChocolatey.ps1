@@ -1,4 +1,4 @@
-$Script:ErrorActionPreference="Stop"
+$Script:ErrorActionPreference = "Stop"
 
 EnsureAdminPrivileges;
 
