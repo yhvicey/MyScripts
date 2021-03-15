@@ -58,6 +58,14 @@ function GetFileSize([long]$fileSize) {
 }
 Set-Alias "fsize" "GetFileSize";
 
+function PrependToPath([string] $folder) {
+    $normalizedFolderPath = [System.IO.Path]::GetFullPath($folder);
+    if (-not ($env:PATH.Contains($normalizedFolderPath))) {
+        Write-Debug "Prepending $normalizedFolderPath to PATH";
+        $env:PATH = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$($env:PATH)";
+    }
+}
+
 function StartProcessOrPath {
     if ($args.Count -eq 0) {
         Start-Process -FilePath .;
