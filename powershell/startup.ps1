@@ -29,6 +29,10 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
         }
     }
 }
+foreach ($module in (Get-Content "$MyScriptsRoot/modules")) {
+    Write-Debug "Importing $module";
+    Import-Module $module;
+}
 #endregion
 
 #region Settings
