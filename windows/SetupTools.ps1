@@ -2,18 +2,10 @@ $Script:ErrorActionPreference = "Stop"
 
 EnsureAdminPrivileges;
 
-#region Collect input
 if (-not $ToolsFolder) {
-    $ToolsFolder = Read-Host -Prompt "Input chocolatey tools folder path [D:/Tools]";
+    Write-Error "Tools folder not defined, run SetupEnvironment.ps1 first.";
+    exit;
 }
-if (-not $ToolsFolder) {
-    $ToolsFolder = "D:/Tools";
-}
-$ToolsFolder = $ToolsFolder.TrimEnd("/").TrimEnd("\");
-if (-not (Test-Path $ToolsFolder)) {
-    New-Item $ToolsFolder -ItemType Directory | Out-Null;
-}
-#endregion
 
 # Install choco.exe if not installed
 $chocoExe = (Get-Command "choco" -ErrorAction SilentlyContinue).Path;
@@ -29,4 +21,12 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-& $chocoExe install "$PSScriptRoot/win32nt/tools.config";
+& $chocoExe install "$PSScriptRoot/tools.config";
+
+#region Post setup
+Write-Host "Tools setup done."
+# Create other folders
+if (-not (Test-Path "$ToolsFolder/bin")) {
+    New-Item "$ToolsFolder/bin" -ItemType Directory | Out-Null;
+}
+#endregion

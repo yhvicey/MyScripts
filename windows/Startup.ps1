@@ -6,6 +6,7 @@ $global:Workspace = "$DevFolder/Workspace";
 $global:Playground = "$DevFolder/Playground";
 $global:GithubRepos = "$DevFolder/Github";
 $global:ToolsFolder = "<ToolsFolder>";
+$global:ToolsBinFolder = "$ToolsFolder/bin";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:TempDirs = "$Desktop/tempDirs";
 
@@ -15,10 +16,14 @@ $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 
 #region Load scripts & modules
 $foldersToLoadScriptsFrom = @(
+    "$MyScriptsRoot/core",
     "$MyScriptsRoot/share",
     "$MyScriptsRoot/$($CurrentOS.ToLower())"
 );
 foreach ($folder in $foldersToLoadScriptsFrom) {
+    if (-not (Test-Path $folder)) {
+        continue;
+    }
     foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {
         try {
             Write-Debug "Loading $($scriptPath.FullName)";

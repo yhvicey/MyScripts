@@ -1,8 +1,16 @@
+function append-to-path {
+    export PATH="$PATH:$1"
+}
+
 function ensure-admin-privileges {
     if [[ $(id -u) -ne 0 ]]; then
         echo "Insufficient permissions to run this script. Rerun as root user."
         return
     fi
+}
+
+function prepend-to-path {
+    export PATH="$1:$PATH"
 }
 
 function start-process-or-path {

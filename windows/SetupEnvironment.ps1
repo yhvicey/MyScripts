@@ -24,9 +24,9 @@ if (-not (Test-Path $ToolsFolder)) {
 #endregion
 
 #region Setup powershell
-$startupScript = "~/startup.ps1"
+$startupScript = "~/Startup.ps1"
 # Install profile
-$startupScriptContent = Get-Content "$PSScriptRoot/startup.ps1" -Raw;
+$startupScriptContent = Get-Content "$PSScriptRoot/Startup.ps1" -Raw;
 $startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", $PSScriptRoot);
 $startupScriptContent = $startupScriptContent.Replace("<DevFolder>", $DevFolder);
 $startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFolder);
@@ -71,5 +71,8 @@ if (-not (Test-Path $GithubRepos)) {
 }
 if (-not (Test-Path $TempDirs)) {
     New-Item $TempDirs -ItemType Directory | Out-Null;
+}
+if (-not (Test-Path $ToolsBinFolder)) {
+    New-Item $ToolsBinFolder -ItemType Directory | Out-Null;
 }
 #endregion

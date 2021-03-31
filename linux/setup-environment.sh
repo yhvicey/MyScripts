@@ -122,4 +122,7 @@ fi
 if [[ ! -d $TEMP_DIRS ]]; then
     mkdir -p $TEMP_DIRS
 fi
+if [[ ! -d $TOOLS_BIN_FOLDER ]]; then
+    mkdir -p $TOOLS_BIN_FOLDER
+fi
 #endregion

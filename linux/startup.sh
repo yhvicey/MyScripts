@@ -6,6 +6,7 @@ export WORKSPACE="$DEV_FOLDER/Workspace";
 export PLAYGROUND="$DEV_FOLDER/Playground";
 export GITHUB_REPOS="$DEV_FOLDER/Github";
 export TOOLS_FOLDER="<TOOLS_FOLDER>";
+export TOOLS_BIN_FOLDER="$TOOLS_FOLDER/bin";
 export TEMP_DIRS="$HOME/tempDirs";
 
 # Colors

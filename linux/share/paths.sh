@@ -1,0 +1,1 @@
+append-to-path $TOOLS_BIN_FOLDER
