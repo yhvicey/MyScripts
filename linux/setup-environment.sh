@@ -30,7 +30,7 @@ SCRIPT_ROOT=$(realpath $(dirname "$0"))
 # Install modules
 for MODULE in $(cat $SCRIPT_ROOT/modules); do
     echo "Installing or updating $MODULE...";
-    apt install -y $MODULE
+    sudo apt install -y $MODULE
 done
 # Setup modules
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
