@@ -21,12 +21,10 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-& $chocoExe install "$PSScriptRoot/tools.config";
+foreach ($tool in (Get-Content "$PSScriptRoot/tools")) {
+    & $chocoExe upgrade --install-if-not-installed $tool;
+}
 
 #region Post setup
 Write-Host "Tools setup done."
-# Create other folders
-if (-not (Test-Path "$ToolsFolder/bin")) {
-    New-Item "$ToolsFolder/bin" -ItemType Directory | Out-Null;
-}
 #endregion

@@ -5,7 +5,7 @@ function append-to-path {
 function ensure-admin-privileges {
     if [[ $(id -u) -ne 0 ]]; then
         echo "Insufficient permissions to run this script. Rerun as root user."
-        return
+        return 1
     fi
 }
 
@@ -19,7 +19,7 @@ function start-process-or-path {
     else
         PATH_TO_START=$(/bin/wslpath -w $1)
     fi
-
+    
     cmd.exe /c start "" "$PATH_TO_START" 1>/dev/null 2>/dev/null
 }
 alias s=start-process-or-path
