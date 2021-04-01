@@ -46,9 +46,9 @@ OH_MY_ZSH_ROOT=~/.oh-my-zsh
 }
 
 # oh-my-posh
-OH_MY_POSH_BIN=/usr/bin/oh-my-posh
+OH_MY_POSH_BIN=/usr/local/bin/oh-my-posh
 [[ -f $OH_MY_POSH_BIN ]] && rm $OH_MY_POSH_BIN
-wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O $OH_MY_POSH_BIN
+sudo wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O $OH_MY_POSH_BIN
 chmod +x $OH_MY_POSH_BIN
 
 OH_MY_POSH_ROOT=~/.poshthemes

@@ -20,6 +20,7 @@ export CURRENT_SHELL=$(echo $SHELL | sed "s/.*\/\(.*\)$/\1/g")
 
 #region Load scripts & modules
 FOLDERS_TO_LOAD_SCRIPTS_FROM=(
+    "$MY_SCRIPTS_ROOT/core"
     "$MY_SCRIPTS_ROOT/share"
     "$MY_SCRIPTS_ROOT/$(echo $CURRENT_SHELL | awk '{print tolower($0)}')"
 );
