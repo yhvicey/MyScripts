@@ -10,8 +10,9 @@ if (-not (Test-Path "HKLM:\SOFTWARE\Microsoft\Command Processor")) {
 $autorunValue = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -ErrorAction SilentlyContinue;
 if (-not $autorunValue) {
     Write-Host "Creating Autorun entry";
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$global:MyScriptsRoot\cmd\autorun.bat" -Force | Out-Null;
-} else {
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$PSScriptRoot\autorun.bat" -Force | Out-Null;
+}
+else {
     Write-Host "Updating Autorun entry";
-    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$global:MyScriptsRoot\cmd\autorun.bat" -Force | Out-Null;
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$PSScriptRoot\autorun.bat" -Force | Out-Null;
 }
