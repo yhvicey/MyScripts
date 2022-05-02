@@ -36,7 +36,7 @@ $startupScriptContent | Out-File -NoNewline -Force $startupScript;
 if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"
 }
-foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
+foreach ($module in (Get-Content "$PSScriptRoot/modules/powershell")) {
     if ($null -eq (Get-InstalledModule $module -ErrorAction SilentlyContinue)) {
         Write-Host "Installing $module...";
         Install-Module $module -Scope CurrentUser -AllowClobber;
@@ -44,6 +44,19 @@ foreach ($module in (Get-Content "$PSScriptRoot/modules")) {
     else {
         Write-Host "Updating $module...";
         Update-Module $module;
+    }
+}
+foreach ($module in (Get-ChildItem "$PSScriptRoot/modules" -Directory)) {
+    $installedPath = "$PSScriptRoot/modules/$module/installed"
+    $installed = Test-Path $installedPath
+    if ($installed -and (Test-Path "$PSScriptRoot/modules/$module/Upgrade.ps1")) {
+        Write-Host "Updating $module...";
+        & "$PSScriptRoot/modules/$module/Upgrade.ps1"
+    }
+    elseif (Test-Path "$PSScriptRoot/modules/$module/Install.ps1") {
+        Write-Host "Installing $module...";
+        & "$PSScriptRoot/modules/$module/Install.ps1"
+        Set-Content $installedPath ([datetime]::UtcNow) -Force
     }
 }
 # Setup profile

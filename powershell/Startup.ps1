@@ -34,9 +34,15 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
         }
     }
 }
-foreach ($module in (Get-Content "$MyScriptsRoot/modules")) {
+foreach ($module in (Get-Content "$MyScriptsRoot/modules/powershell")) {
     Write-Debug "Importing $module";
     Import-Module $module;
+}
+foreach ($module in (Get-ChildItem "$MyScriptsRoot/modules" -Directory)) {
+    if (Test-Path "$MyScriptsRoot/modules/$module/Startup.ps1") {
+        Write-Debug "Importing $module";
+        & "$MyScriptsRoot/modules/$module/Startup.ps1"
+    }
 }
 #endregion
 
@@ -62,6 +68,4 @@ if (Get-Command "dotnet-suggest" -ErrorAction SilentlyContinue) {
     }
     $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.0"
 }
-# Modules
-Set-PoshPrompt -Theme Agnoster;
 #endregion

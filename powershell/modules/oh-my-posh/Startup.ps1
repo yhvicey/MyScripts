@@ -1,0 +1,1 @@
+oh-my-posh init pwsh --config "$PSScriptRoot/config.json" | Invoke-Expression
