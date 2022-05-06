@@ -39,9 +39,12 @@ foreach ($module in (Get-Content "$MyScriptsRoot/modules/powershell")) {
     Import-Module $module;
 }
 foreach ($module in (Get-ChildItem "$MyScriptsRoot/modules" -Directory)) {
-    if (Test-Path "$MyScriptsRoot/modules/$module/Startup.ps1") {
-        Write-Debug "Importing $module";
-        & "$MyScriptsRoot/modules/$module/Startup.ps1"
+    if (Test-Path "$($module.FullName)/Startup.ps1") {
+        Write-Debug "Importing $($module.Name)";
+        & "$($module.FullName)/Startup.ps1"
+    }
+    else {
+        Write-Debug "No startup file found for $module"
     }
 }
 #endregion
