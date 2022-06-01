@@ -15,7 +15,8 @@
         }
       ],
       "type": "prompt",
-      "vertical_offset": -1
+      "vertical_offset": -1,
+      "newline": true
     },
     {
       "alignment": "left",
