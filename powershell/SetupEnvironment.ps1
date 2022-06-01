@@ -47,16 +47,24 @@ foreach ($module in (Get-Content "$PSScriptRoot/modules/powershell")) {
     }
 }
 foreach ($module in (Get-ChildItem "$PSScriptRoot/modules" -Directory)) {
-    $installedPath = "$PSScriptRoot/modules/$module/installed"
+    $installedPath = "$($module.FullName)/installed"
     $installed = Test-Path $installedPath
-    if ($installed -and (Test-Path "$PSScriptRoot/modules/$module/Upgrade.ps1")) {
-        Write-Host "Updating $module...";
-        & "$PSScriptRoot/modules/$module/Upgrade.ps1"
+    if ($installed) {
+        if (Test-Path "$($module.FullName)/Upgrade.ps1") {
+            Write-Host "Upgrading $($module.Name)...";
+            & "$($module.FullName)/Upgrade.ps1"
+        }
+        else {
+            Write-Host "$($module.Name) already installed and no upgrade script is provided";
+        }
     }
-    elseif (Test-Path "$PSScriptRoot/modules/$module/Install.ps1") {
-        Write-Host "Installing $module...";
-        & "$PSScriptRoot/modules/$module/Install.ps1"
+    elseif (Test-Path "$($module.FullName)/Install.ps1") {
+        Write-Host "Installing $($module.Name)...";
+        & "$($module.FullName)/Install.ps1"
         Set-Content $installedPath ([datetime]::UtcNow) -Force
+    }
+    else {
+        Write-Host "Module $module's install script is not provided, skipping";
     }
 }
 # Setup profile
