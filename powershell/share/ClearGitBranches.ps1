@@ -7,7 +7,7 @@ function ClearGitBranches(
     & $gitExe remote prune $Remote;
     $branches = @();
     & $gitExe branch -v | Where-Object { $_ -match "gone" } | Foreach-Object {
-        if ($_ -match "  ([\w/]+)") {
+        if ($_ -match "  ([\w/-]+)") {
             $branches += $Matches[1];
         }
     }
