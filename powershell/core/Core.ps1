@@ -6,6 +6,10 @@ function AppendToPath([string] $folder) {
     }
 }
 
+function EncodeToBase64([string]$Raw) {
+    return [System.Convert]::ToBase64String([System.Text.ENcoding]::UTF8.GetBytes($Raw))
+}
+
 function EnsureAdminPrivileges {
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
         throw "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again.";
@@ -17,6 +21,10 @@ function EnsureOS([string] $os) {
     if ($currentOs.ToLower() -ne $os.ToLower()) {
         throw "OS not matched. Requires $os but got $currentOs";
     }
+}
+
+function DecodeFromBase64([string]$Encoded) {
+    return [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($Encoded))
 }
 
 function PrependToPath([string] $folder) {
