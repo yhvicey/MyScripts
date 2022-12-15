@@ -6,14 +6,34 @@ function AppendToPath([string] $folder) {
     }
 }
 
-function EncodeToBase64([string]$Raw) {
-    return [System.Convert]::ToBase64String([System.Text.ENcoding]::UTF8.GetBytes($Raw))
+function EncodeToBase64(
+    [Parameter(ValueFromPipeline = $true)]
+    [string]$Raw
+) {
+    Begin {}
+    Process {
+        return [System.Convert]::ToBase64String([System.Text.ENcoding]::UTF8.GetBytes($Raw))
+    }
+    End {}
 }
 
 function EnsureAdminPrivileges {
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
         throw "Insufficient permissions to run this script. Open the PowerShell console as an administrator and run this script again.";
     }
+}
+
+function EnsureNotNullOrEmpty(
+    [Parameter(ValueFromPipeline = $true)]
+    [string]$Value
+) {
+    Begin {}
+    Process {
+        if ([string]::IsNullOrEmpty($Value)) {
+            throw "Value is null or empty"
+        }
+    }
+    End {}
 }
 
 function EnsureOS([string] $os) {
@@ -23,8 +43,15 @@ function EnsureOS([string] $os) {
     }
 }
 
-function DecodeFromBase64([string]$Encoded) {
-    return [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($Encoded))
+function DecodeFromBase64(
+    [Parameter(ValueFromPipeline = $true)]
+    [string]$Encoded
+) {
+    Begin {}
+    Process {
+        return [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($Encoded))
+    }
+    End {}
 }
 
 function PrependToPath([string] $folder) {
