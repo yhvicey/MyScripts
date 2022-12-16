@@ -1,18 +1,21 @@
-EnsureAdminPrivileges;
 $script:ErrorActionPreference = "Stop";
 
-# HKLM:\SOFTWARE\Microsoft\Command Processor
-if (-not (Test-Path "HKLM:\SOFTWARE\Microsoft\Command Processor")) {
+$cmdKeyParentPath = "HKCU:\SOFTWARE\Microsoft"
+$cmdKeyName = "Command Processor"
+$cmdKeyPath = "$cmdKeyParentPath\$cmdKeyName"
+$autorunCommand = "`"$PSScriptRoot\autorun.bat`""
+# Create parent key
+if (-not (Test-Path $cmdKeyPath)) {
     Write-Host "Creating cmd key";
-    New-Item -Path "HKLM:\SOFTWARE\Microsoft" -Name "Command Processor" -Force | Out-Null;
+    New-Item -Path $cmdKeyParentPath -Name $cmdKeyName -Force | Out-Null;
 }
 # Autorun
-$autorunValue = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -ErrorAction SilentlyContinue;
-if (-not $autorunValue) {
+$autorunProp = Get-ItemProperty -Path $cmdKeyPath -Name "Autorun" -ErrorAction SilentlyContinue;
+if (-not $autorunProp) {
     Write-Host "Creating Autorun entry";
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$PSScriptRoot\autorun.bat" -Force | Out-Null;
+    New-ItemProperty -Path $cmdKeyPath -Name "Autorun" -Value $autorunCommand -Force | Out-Null;
 }
-else {
+elseif (-not ($autorunProp.Autorun -contains $autorunCommand)) {
     Write-Host "Updating Autorun entry";
-    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Command Processor" -Name "Autorun" -Value "$PSScriptRoot\autorun.bat" -Force | Out-Null;
+    Set-ItemProperty -Path $cmdKeyPath -Name "Autorun" -Value "$($autorunProp.Autorun)&$autorunCommand" -Force | Out-Null;
 }

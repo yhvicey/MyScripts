@@ -16,9 +16,9 @@ $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 
 #region Load scripts & modules
 $foldersToLoadScriptsFrom = @(
-    "$MyScriptsRoot/core",
-    "$MyScriptsRoot/share",
-    "$MyScriptsRoot/$($CurrentOS.ToLower())"
+    "$MyScriptsRoot/powershell/core",
+    "$MyScriptsRoot/powershell/share",
+    "$MyScriptsRoot/powershell/$($CurrentOS.ToLower())"
 );
 foreach ($folder in $foldersToLoadScriptsFrom) {
     if (-not (Test-Path $folder)) {
@@ -34,11 +34,11 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
         }
     }
 }
-foreach ($module in (Get-Content "$MyScriptsRoot/modules/powershell")) {
+foreach ($module in (Get-Content "$MyScriptsRoot/powershell/modules/powershell")) {
     Write-Debug "Importing $module";
     Import-Module $module;
 }
-foreach ($module in (Get-ChildItem "$MyScriptsRoot/modules" -Directory)) {
+foreach ($module in (Get-ChildItem "$MyScriptsRoot/powershell/modules" -Directory)) {
     if (Test-Path "$($module.FullName)/Startup.ps1") {
         Write-Debug "Importing $($module.Name)";
         & "$($module.FullName)/Startup.ps1"

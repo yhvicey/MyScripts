@@ -27,7 +27,7 @@ if (-not (Test-Path $ToolsFolder)) {
 $startupScript = "~/Startup.ps1"
 # Install profile
 $startupScriptContent = Get-Content "$PSScriptRoot/Startup.ps1" -Raw;
-$startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", $PSScriptRoot);
+$startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", (Resolve-Path "$PSScriptRoot/.."));
 $startupScriptContent = $startupScriptContent.Replace("<DevFolder>", $DevFolder);
 $startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFolder);
 $setupFlag = "MY_SCRIPTS_SETUP_DONE"

@@ -6,6 +6,10 @@ function cdg {
     Push-Location $global:GithubRepos;
 }
 
+function cdmyscripts {
+    Push-Location $global:MyScriptsRoot
+}
+
 function cdp {
     Push-Location $global:Playground;
 }
