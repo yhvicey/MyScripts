@@ -2,6 +2,8 @@ everything
 fzf
 gnuwin32-coreutils.install
 ilspy
+kubernetes-cli
+kubernetes-helm
 nodejs.install
 nuget.commandline
 nuget-credentialprovider-vss
