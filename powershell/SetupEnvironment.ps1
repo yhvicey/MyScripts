@@ -27,8 +27,9 @@ if (-not (Test-Path $ToolsFolder)) {
 #endregion
 
 #region Setup powershell
-$startupScript = "~/Startup.ps1"
-$startupDoneFile = "~/Startup.done"
+$profileFolder = Split-Path $PROFILE -Parent
+$startupScript = "$profileFolder/Startup.ps1"
+$startupDoneFile = "$profileFolder/Startup.done"
 # Install profile
 $startupScriptContent = Get-Content "$PSScriptRoot/Startup.ps1" -Raw;
 $startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", (Resolve-Path "$PSScriptRoot/.."));
@@ -44,7 +45,7 @@ if (-not $SkipInstallPhase) {
     foreach ($module in (Get-Content "$PSScriptRoot/modules/powershell")) {
         if ($null -eq (Get-InstalledModule $module -ErrorAction SilentlyContinue)) {
             Write-Host "Installing $module...";
-            Install-Module $module -Scope CurrentUser -AllowClobber;
+            Install-Module $module -Scope CurrentUser -AllowClobber -Force;
         }
         else {
             Write-Host "Updating $module...";

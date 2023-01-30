@@ -30,7 +30,7 @@ finally {
 if ($repoVersion -ne $currentVersion) {
     Write-Warning "Installed scripts can be upgraded, continue? [Y(es)/f(ull)/n(o)]"
     $confirm = [Console]::ReadKey()
-    if ([Char]::ToLower($confirm.KeyChar) -eq "y") {
+    if ($confirm.Key -eq [System.ConsoleKey]::Enter -or [Char]::ToLower($confirm.KeyChar) -eq "y") {
         & "$MyScriptsRoot/powershell/SetupEnvironment.ps1" -SkipInstallPhase
     }
     elseif ([Char]::ToLower($confirm.KeyChar) -eq "f") {
