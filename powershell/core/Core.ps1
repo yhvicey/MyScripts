@@ -23,6 +23,28 @@ function EnsureAdminPrivileges {
     }
 }
 
+function EnsureDirectoryExists(
+    [string]$File
+) {
+    if ([System.IO.File]::Exists($File)) {
+        throw "Target $File is a directory."
+    }
+    if (-not [System.IO.Directory]::Exists($File)) {
+        throw "Target directory $File not exists."
+    }
+}
+
+function EnsureFileExists(
+    [string]$File
+) {
+    if ([System.IO.Directory]::Exists($File)) {
+        throw "Target $File is a directory."
+    }
+    if (-not [System.IO.File]::Exists($File)) {
+        throw "Target file $File not exists."
+    }
+}
+
 function EnsureNotNullOrEmpty(
     [Parameter(ValueFromPipeline = $true)]
     [string]$Value
@@ -60,6 +82,10 @@ function PrependToPath([string] $folder) {
         Write-Debug "Prepending $normalizedFolderPath to PATH";
         $env:PATH = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$($env:PATH)";
     }
+}
+
+function ReloadProfile {
+    . $PROFILE
 }
 
 function StartProcessOrPath {
