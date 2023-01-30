@@ -2,6 +2,7 @@ everything
 fzf
 gnuwin32-coreutils.install
 ilspy
+kubelogin
 kubernetes-cli
 kubernetes-helm
 nodejs.install
