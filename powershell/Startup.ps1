@@ -28,12 +28,12 @@ finally {
     Pop-Location
 }
 if ($repoVersion -ne $currentVersion) {
-    Write-Warning "Installed scripts can be upgraded, continue? [Y(es)/a(ll)/n(o)]"
+    Write-Warning "Installed scripts can be upgraded, continue? [Y(es)/f(ull)/n(o)]"
     $confirm = [Console]::ReadKey()
     if ([Char]::ToLower($confirm.KeyChar) -eq "y") {
         & "$MyScriptsRoot/powershell/SetupEnvironment.ps1" -SkipInstallPhase
     }
-    elseif ([Char]::ToLower($confirm.KeyChar) -eq "a") {
+    elseif ([Char]::ToLower($confirm.KeyChar) -eq "f") {
         & "$MyScriptsRoot/powershell/SetupEnvironment.ps1"
     }
 }
