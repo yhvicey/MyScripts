@@ -15,7 +15,8 @@ $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 #endregion
 
 #region Version check
-$versionFile = "~/Startup.done"
+$profileFolder = Split-Path $PROFILE -Parent
+$versionFile = "$profileFolder/Startup.done"
 if (Test-Path $versionFile) {
     $currentVersion = [string](Get-Content $versionFile)
 }
