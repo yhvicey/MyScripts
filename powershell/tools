@@ -9,4 +9,5 @@ nuget.commandline
 nuget-credentialprovider-vss
 nugetpackageexplorer
 python3
+sudo
 sysinternals
