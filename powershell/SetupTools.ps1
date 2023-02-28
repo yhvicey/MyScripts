@@ -21,8 +21,10 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-foreach ($tool in (Get-Content "$PSScriptRoot/tools")) {
-    & $chocoExe upgrade --install-if-not-installed $tool;
+foreach ($toolInstallExp in (Get-Content "$PSScriptRoot/tools")) {
+    $installExpression = "& $chocoExe upgrade --install-if-not-installed $toolInstallExp";
+    Write-Host "Running: $installExpression"
+    Invoke-Expression $installExpression
 }
 
 #region Post setup

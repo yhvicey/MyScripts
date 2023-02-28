@@ -86,6 +86,9 @@ function PrependToPath([string] $folder) {
 
 function ReloadProfile {
     . $PROFILE
+    if (Get-Command refreshenv -ErrorAction "SilentlyContinue") {
+        refreshenv
+    }
 }
 
 function StartProcessOrPath {
