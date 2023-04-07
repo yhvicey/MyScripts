@@ -17,7 +17,7 @@ function GithubClone(
         Push-Location $global:GithubRepos
         $repoUri = [System.Uri]::new("https://github.com/$Org/$Repo")
         $localFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($global:GithubRepos, [string]::Join("", $repoUri.Segments).Trim("/")))
-        git clone $Repo $localFolder
+        git clone $repoUri $localFolder
         if ($OpenInCode) {
             code $localFolder
         }
