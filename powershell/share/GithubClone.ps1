@@ -1,14 +1,18 @@
 function GithubClone(
-    [string]$RepoOrOrg,
+    [string]$RepoOrOrgOrUrl,
     [string]$Repo = $null,
     [switch]$OpenInCode = $false
 ) {
-    if ($RepoOrOrg.Contains("/")) {
+    if ($RepoOrOrgOrUrl -match "https://github.com/([^/]+)/([^/]+)") {
+        $Org = $Matches[1]
+        $Repo = $Matches[2]
+    }
+    elseif ($RepoOrOrgOrUrl.Contains("/")) {
         $Org = $RepoOrOrg.Split("/")[0]
         $Repo = $RepoOrOrg.Split("/")[1]
     }
     else {
-        $Org = $RepoOrOrg
+        $Org = $RepoOrOrgOrUrl
         if ($null -eq $Repo) {
             throw "Repo must be specified"
         }
