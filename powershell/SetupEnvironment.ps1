@@ -28,6 +28,9 @@ if (-not (Test-Path $ToolsFolder)) {
 
 #region Setup powershell
 $profileFolder = Split-Path $PROFILE -Parent
+if (-not (Test-Path $profileFolder)) {
+    New-Item -Path $profileFolder -ItemType Directory -Force | Out-Null
+}
 $startupScript = "$profileFolder/Startup.ps1"
 $startupDoneFile = "$profileFolder/Startup.done"
 # Install profile
