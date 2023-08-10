@@ -8,8 +8,8 @@ function GithubClone(
         $Repo = $Matches[2]
     }
     elseif ($RepoOrOrgOrUrl.Contains("/")) {
-        $Org = $RepoOrOrg.Split("/")[0]
-        $Repo = $RepoOrOrg.Split("/")[1]
+        $Org = $RepoOrOrgOrUrl.Split("/")[0]
+        $Repo = $RepoOrOrgOrUrl.Split("/")[1]
     }
     else {
         $Org = $RepoOrOrgOrUrl
