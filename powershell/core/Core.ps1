@@ -1,8 +1,14 @@
-function AppendToPath([string] $folder) {
-    $normalizedFolderPath = [System.IO.Path]::GetFullPath($folder);
+function AppendToPath([string] $Folder, [switch] $Permanent) {
+    $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
     if (-not ($env:PATH.Contains($normalizedFolderPath))) {
         Write-Debug "Adding $normalizedFolderPath to PATH";
-        $env:PATH = "$($env:PATH)$([System.IO.Path]::PathSeparator)$normalizedFolderPath";
+        $updatedPath = "$($env:PATH)$([System.IO.Path]::PathSeparator)$normalizedFolderPath";
+        if ($permanent) {
+            [Environment]::SetEnvironmentVariable("PATH", $updatedPath, [EnvironmentVariableTarget]::Machine)
+        }
+        else {
+            $env:PATH = $updatedPath
+        }
     }
 }
 
@@ -76,11 +82,17 @@ function DecodeFromBase64(
     End {}
 }
 
-function PrependToPath([string] $folder) {
-    $normalizedFolderPath = [System.IO.Path]::GetFullPath($folder);
+function PrependToPath([string] $Folder, [switch] $Permanent) {
+    $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
     if (-not ($env:PATH.Contains($normalizedFolderPath))) {
-        Write-Debug "Prepending $normalizedFolderPath to PATH";
-        $env:PATH = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$($env:PATH)";
+        Write-Debug "Adding $normalizedFolderPath to PATH";
+        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$($env:PATH)";
+        if ($permanent) {
+            [Environment]::SetEnvironmentVariable("PATH", $updatedPath, [EnvironmentVariableTarget]::Machine)
+        }
+        else {
+            $env:PATH = $updatedPath
+        }
     }
 }
 

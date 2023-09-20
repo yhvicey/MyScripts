@@ -9,5 +9,6 @@ nuget.commandline
 nuget-credentialprovider-vss
 nugetpackageexplorer
 python3 --params "/InstallDir:$([System.IO.Path]::GetFullPath("$ToolsFolder\python3")) /NoLockDown"
+sbt
 sudo
 sysinternals
