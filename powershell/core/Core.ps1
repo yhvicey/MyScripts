@@ -1,14 +1,13 @@
-function AppendToPath([string] $Folder, [switch] $Permanent) {
+function AppendToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process) {
     $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
-    if (-not ($env:PATH.Contains($normalizedFolderPath))) {
-        Write-Debug "Adding $normalizedFolderPath to PATH";
-        $updatedPath = "$($env:PATH)$([System.IO.Path]::PathSeparator)$normalizedFolderPath";
-        if ($permanent) {
-            [Environment]::SetEnvironmentVariable("PATH", $updatedPath, [EnvironmentVariableTarget]::Machine)
+    $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
+
+    if (-not ($currentPath.Contains($normalizedFolderPath))) {
+        if ($Target -ne [System.EnvironmentVariableTarget]::Process) {
+            Write-Debug "Appending $normalizedFolderPath to PATH, target $Target";
         }
-        else {
-            $env:PATH = $updatedPath
-        }
+        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$currentPath";
+        [Environment]::SetEnvironmentVariable("PATH", $updatedPath, $Target)
     }
 }
 
@@ -82,17 +81,16 @@ function DecodeFromBase64(
     End {}
 }
 
-function PrependToPath([string] $Folder, [switch] $Permanent) {
+function PrependToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process) {
     $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
-    if (-not ($env:PATH.Contains($normalizedFolderPath))) {
-        Write-Debug "Adding $normalizedFolderPath to PATH";
-        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$($env:PATH)";
-        if ($permanent) {
-            [Environment]::SetEnvironmentVariable("PATH", $updatedPath, [EnvironmentVariableTarget]::Machine)
+    $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
+
+    if (-not ($currentPath.Contains($normalizedFolderPath))) {
+        if ($Target -ne [System.EnvironmentVariableTarget]::Process) {
+            Write-Debug "Prepending $normalizedFolderPath to PATH, target $Target";
         }
-        else {
-            $env:PATH = $updatedPath
-        }
+        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$currentPath";
+        [Environment]::SetEnvironmentVariable("PATH", $updatedPath, $Target)
     }
 }
 

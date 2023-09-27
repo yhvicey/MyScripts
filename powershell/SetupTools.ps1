@@ -21,8 +21,8 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
 }
 
 # Install tools
-foreach ($toolInstallExp in (Get-Content "$PSScriptRoot/tools")) {
-    $installExpression = "& $chocoExe upgrade --install-if-not-installed $toolInstallExp";
+foreach ($chocoToolInstallExp in (Get-Content "$PSScriptRoot/choco.tools")) {
+    $installExpression = "& $chocoExe upgrade --install-if-not-installed $chocoToolInstallExp";
     Write-Host "Running: $installExpression"
     Invoke-Expression $installExpression
 }
