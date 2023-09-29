@@ -29,9 +29,13 @@ finally {
     Pop-Location
 }
 if ($repoVersion -ne $currentVersion) {
-    Write-Warning "Installed scripts can be upgraded, continue? [Y(es)/f(ull)/n(o)]"
+    Write-Warning "Installed scripts can be upgraded, continue? [Y(es)/f(ull)/n(o)/a(utomatically)]"
     $confirm = [Console]::ReadKey()
-    if ($confirm.Key -eq [System.ConsoleKey]::Enter -or [Char]::ToLower($confirm.KeyChar) -eq "y") {
+    if ([Char]::ToLower($confirm.KeyChar) -eq "a") {
+        [System.Environment]::SetEnvironmentVariable("MyScriptsAutoUpgrade", "1", [System.EnvironmentVariableTarget]::User)
+    }
+    $AutoUpgrade = [System.Environment]::GetEnvironmentVariable("MyScriptsAutoUpgrade", [System.EnvironmentVariableTarget]::User) -eq "1"
+    if ($AutoUpgrade -or $confirm.Key -eq [System.ConsoleKey]::Enter -or [Char]::ToLower($confirm.KeyChar) -eq "y") {
         & "$MyScriptsRoot/powershell/SetupEnvironment.ps1" -SkipInstallPhase
     }
     elseif ([Char]::ToLower($confirm.KeyChar) -eq "f") {
