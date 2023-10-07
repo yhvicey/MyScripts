@@ -4,7 +4,7 @@ gnuwin32-coreutils.install
 ilspy
 kubernetes-cli
 kubernetes-helm
-nodejs.lts
+nodejs-lts
 nuget.commandline
 nuget-credentialprovider-vss
 nugetpackageexplorer
