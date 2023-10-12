@@ -84,16 +84,18 @@ if (Test-Path $PROFILE) {
 else {
     New-Item $PROFILE -ItemType File -Force;
 }
-Write-Output ". $startupScript # $setupFlag" >> $PROFILE;
+Write-Output ". '$startupScript' # $setupFlag" >> $PROFILE;
 Push-Location $MyScriptsRoot
 try {
     $repoVersion = git rev-parse master
-    Write-Output $repoVersion > $startupDoneFile
 }
-catch {}
+catch {
+    $repoVersion = "ERROR_GETTING_VERSION"
+}
 finally {
     Pop-Location
 }
+Write-Output $repoVersion > $startupDoneFile
 #endregion
 
 #region Post setup
