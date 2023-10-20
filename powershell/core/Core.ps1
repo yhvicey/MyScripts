@@ -1,13 +1,28 @@
-function AppendToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process) {
-    $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
+function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process, [switch]$Prepend = $false) {
+    if ($Folder -eq ".") {
+        $normalizedFolderPath = $Folder
+    }
+    else {
+        $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
+    }
+    Write-Debug "Normalized path: $normalizedFolderPath"
     $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
+    Write-Debug "Current PATH: $currentPath"
 
-    if (-not ($currentPath.Contains($normalizedFolderPath))) {
+    if (-not [System.Collections.Generic.HashSet[string]]::new($currentPath.Split([System.Environment]::PathSeparator)).Contains($normalizedFolderPath)) {
         if ($Target -ne [System.EnvironmentVariableTarget]::Process) {
-            Write-Debug "Appending $normalizedFolderPath to PATH, target $Target";
+            Write-Debug "Adding $normalizedFolderPath to PATH, target $Target, prepend $Prepend";
         }
-        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$currentPath";
+        if ($Prepend) {
+            $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$currentPath";
+        }
+        else {
+            $updatedPath = "$currentPath$([System.IO.Path]::PathSeparator)$normalizedFolderPath";
+        }
         [Environment]::SetEnvironmentVariable("PATH", $updatedPath, $Target)
+    }
+    else {
+        Write-Debug "Path $normalizedFolderPath already exists in PATH"
     }
 }
 
@@ -79,19 +94,6 @@ function DecodeFromBase64(
         return [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($Encoded))
     }
     End {}
-}
-
-function PrependToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process) {
-    $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
-    $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
-
-    if (-not ($currentPath.Contains($normalizedFolderPath))) {
-        if ($Target -ne [System.EnvironmentVariableTarget]::Process) {
-            Write-Debug "Prepending $normalizedFolderPath to PATH, target $Target";
-        }
-        $updatedPath = "$normalizedFolderPath$([System.IO.Path]::PathSeparator)$currentPath";
-        [Environment]::SetEnvironmentVariable("PATH", $updatedPath, $Target)
-    }
 }
 
 function ReloadProfile {
