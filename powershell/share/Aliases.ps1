@@ -25,3 +25,7 @@ function cdtool {
 function cdw {
     Push-Location $global:Workspace;
 }
+
+function sbin {
+    Start-Process $global:ToolsBinFolder
+}
