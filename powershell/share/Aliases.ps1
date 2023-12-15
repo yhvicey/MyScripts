@@ -10,6 +10,14 @@ function cdmyscripts {
     Push-Location $global:MyScriptsRoot
 }
 
+function cdop {
+    Push-Location "$env:USERPROFILE/OneDrive/Projects"
+}
+
+function cdomp {
+    Push-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
+}
+
 function cdp {
     Push-Location $global:Playground;
 }
