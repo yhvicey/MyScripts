@@ -95,20 +95,3 @@ function DecodeFromBase64(
     }
     End {}
 }
-
-function ReloadProfile {
-    if (Get-Command refreshenv -ErrorAction "SilentlyContinue") {
-        refreshenv
-    }
-    . $PROFILE
-}
-
-function StartProcessOrPath {
-    if ($args.Count -eq 0) {
-        Start-Process -FilePath .;
-    }
-    else {
-        Start-Process -FilePath $args[0] $args;
-    }
-}
-Set-Alias "s" "StartProcessOrPath";
