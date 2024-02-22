@@ -23,8 +23,8 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
     $chocoExe = (Get-Command "choco").Path;
-    & $chocoExe feature enable -n allowGlobalConfirmation;
 }
+& $chocoExe feature enable -n allowGlobalConfirmation;
 
 # Install tools
 foreach ($chocoToolInstallExp in (Get-Content "$PSScriptRoot/choco.tools")) {
