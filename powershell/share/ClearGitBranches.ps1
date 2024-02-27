@@ -22,7 +22,7 @@ function ClearGitBranches(
         Write-Host "  $_";
     }
 
-    if (!Confirm) {
+    if (-not (Confirm)) {
         return;
     }
 
