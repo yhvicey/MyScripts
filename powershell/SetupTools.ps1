@@ -24,7 +24,15 @@ if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
     $chocoExe = (Get-Command "choco").Path;
 }
-& $chocoExe feature enable -n allowGlobalConfirmation;
+$confirmationEnabled = (& $chocoExe feature get allowGlobalConfirmation --limit-output | ForEach-Object { $_ -eq "Enabled" })
+if (-not $confirmationEnabled) {
+    if (Confirm "Enable Global Confirmation?") {
+        & $chocoExe feature enable -n allowGlobalConfirmation;
+    }
+}
+
+# Try upgrade chocolatey
+& $chocoExe upgrade chocolatey
 
 # Install tools
 foreach ($chocoToolInstallExp in (Get-Content "$PSScriptRoot/choco.tools")) {

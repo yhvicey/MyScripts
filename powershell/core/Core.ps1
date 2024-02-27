@@ -26,6 +26,20 @@ function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target 
     }
 }
 
+function Confirm([string]$Message = "", [bool]$DefaultResult = $false) {
+    if (-not [string]::IsNullOrEmpty($Message)) {
+        $Message = "$Message "
+    }
+    $userChoice = Read-Host -Prompt "$($Message)Confirm? [y/n]"
+    if ($userChoice -match "(y|Y)") {
+        return $true
+    }
+    if ([string]::IsNullOrEmpty($userChoice)) {
+        return $DefaultResult
+    }
+    return $false
+}
+
 function EncodeToBase64(
     [Parameter(ValueFromPipeline = $true)]
     [string]$Raw

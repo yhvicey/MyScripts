@@ -22,7 +22,7 @@ function ClearGitBranches(
         Write-Host "  $_";
     }
 
-    if (!((Read-Host -Prompt "Confirm? [y/n]") -match "(y|Y)")) {
+    if (!Confirm) {
         return;
     }
 
