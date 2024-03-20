@@ -1,3 +1,4 @@
+7zip
 everything
 fzf
 gnuwin32-coreutils.install
@@ -5,8 +6,8 @@ ilspy
 kubernetes-cli
 kubernetes-helm
 nodejs-lts
-nuget.commandline
 nuget-credentialprovider-vss
+nuget.commandline
 nugetpackageexplorer
 python3 --params "/InstallDir:$([System.IO.Path]::GetFullPath("$ToolsFolder\python3")) /NoLockDown"
 sbt
