@@ -10,6 +10,7 @@ nodejs-lts
 nuget-credentialprovider-vss
 nuget.commandline
 nugetpackageexplorer
+openssl
 python3 --params "/InstallDir:$([System.IO.Path]::GetFullPath("$ToolsFolder\python3")) /NoLockDown"
 sbt
 sudo
