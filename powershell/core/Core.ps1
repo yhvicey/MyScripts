@@ -26,9 +26,12 @@ function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target 
     }
 }
 
-function Confirm([string]$Message = "", [bool]$DefaultResult = $false) {
+function Confirm([string]$Message = "", [bool]$DefaultResult = $false, [switch]$NewLine = $false) {
     if (-not [string]::IsNullOrEmpty($Message)) {
         $Message = "$Message "
+    }
+    if ($NewLine) {
+        $Message = "$Message`n"
     }
     $userChoice = Read-Host -Prompt "$($Message)Confirm? [y/n]"
     if ($userChoice -match "(y|Y)") {
