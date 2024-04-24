@@ -43,6 +43,11 @@ function Confirm([string]$Message = "", [bool]$DefaultResult = $false, [switch]$
     return $false
 }
 
+function EchoAndInvoke([string]$Expression) {
+    Write-Host "Running: $Expression"
+    Invoke-Expression $Expression
+}
+
 function EncodeToBase64(
     [Parameter(ValueFromPipeline = $true)]
     [string]$Raw
