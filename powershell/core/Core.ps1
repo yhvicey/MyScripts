@@ -43,8 +43,16 @@ function Confirm([string]$Message = "", [bool]$DefaultResult = $false, [switch]$
     return $false
 }
 
-function EchoAndInvoke([string]$Expression) {
-    Write-Host "Running: $Expression"
+function EchoAndInvoke([string]$Expression, [switch]$Confirm = $false) {
+    $message = "Running: $Expression"
+    if ($Confirm) {
+        if (-not (Confirm $message -NewLine)) {
+            return
+        }
+    }
+    else {
+        Write-Host $message
+    }
     Invoke-Expression $Expression
 }
 
