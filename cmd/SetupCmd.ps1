@@ -17,7 +17,6 @@ if (-not $autorunProp) {
     New-ItemProperty -Path $cmdKeyPath -Name "Autorun" -Value $autorunCommand -Force | Out-Null;
 }
 else {
-    Write-Host "Updating Autorun entry, was $($autorunProp.Autorun)";
     $entries = @($autorunProp.Autorun.Split("&"))
     $updatedEntries = @()
     $scriptInstalled = $false
@@ -31,7 +30,7 @@ else {
     if (-not $scriptInstalled) {
         $updatedEntries += $autorunCommand
     }
-    $autorunPropValue = [string]::Join("&", $entries)
+    $autorunPropValue = [string]::Join("&", $updatedEntries)
     Write-Host "Updating Autorun entry, was $($autorunProp.Autorun), new value $autorunPropValue";
     Set-ItemProperty -Path $cmdKeyPath -Name "Autorun" -Value "$autorunPropValue" -Force | Out-Null;
 }
