@@ -1,4 +1,6 @@
 $Script:ErrorActionPreference = "Stop"
+$currentProgressPreference = $ProgressPreference
+$ProgressPreference = "SilentlyContinue"
 
 EnsureAdminPrivileges;
 
@@ -81,4 +83,5 @@ finally {
     if (Test-Path $tempFolder) {
         Remove-Item -Recurse $tempFolder;
     }
+    $ProgressPreference = $currentProgressPreference
 }
