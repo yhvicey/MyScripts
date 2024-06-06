@@ -22,10 +22,13 @@ function GithubCode(
         throw "VS code not found in path"
     }
 
-    $localFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($global:GithubRepos, $Org, $Repo))
+    $localFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($global:GithubRepos, $Org, $Repo)).TrimEnd(".git")
     if (-not (Test-Path $localFolder)) {
         if (Confirm "Repo not exists, clone to local?" -DefaultResult $true) {
             GithubClone -RepoOrOrgOrUrl:$RepoOrOrgOrUrl -Repo:$Repo
+        }
+        else {
+            return
         }
     }
     & $codeExe $localFolder
