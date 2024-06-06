@@ -3,6 +3,6 @@ function StartPowershellInCmdSession(
     [string]$CmdScript
 ) {
     $scriptPath = (Resolve-Path $CmdScript).Path
-    Start-Process "cmd /k $scriptPath && powershell"
+    & "cmd" "/k $scriptPath && powershell -NoLogo"
 }
 Set-Alias "spic" "StartPowershellInCmdSession";
