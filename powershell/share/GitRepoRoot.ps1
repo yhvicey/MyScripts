@@ -13,3 +13,4 @@ function GoToGitRepoRoot() {
     } while ($true)
 }
 Set-Alias "reporoot" "GoToGitRepoRoot"
+Set-Alias "rr" "GoToGitRepoRoot"
