@@ -2,6 +2,7 @@
 azure-kubelogin
 everything
 fzf
+git
 gnuwin32-coreutils.install
 ilspy
 kubernetes-cli
@@ -12,7 +13,7 @@ nuget-credentialprovider-vss
 nuget.commandline
 nugetpackageexplorer
 openssl
-python3 --params "/InstallDir:$([System.IO.Path]::GetFullPath("$ToolsFolder\python3")) /NoLockDown"
+python3 --params "/NoLockDown"
 sbt
 sudo
 sysinternals

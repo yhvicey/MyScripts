@@ -20,16 +20,7 @@ if (-not $SkipChocolatey) {
     # Install choco.exe if not installed
     $chocoExe = (Get-Command "choco" -ErrorAction SilentlyContinue).Path;
     if (($null -eq $chocoExe) -or -not (Test-Path $chocoExe)) {
-        $chocolateyInstall = [System.Environment]::GetEnvironmentVariable("ChocolateyInstall", "Machine")
-        if ([string]::IsNullOrEmpty($chocolateyInstall)) {
-            $chocolateyInstall = "$ToolsFolder\chocolatey";
-        }
-        else {
-            Write-Host "Picking ChocolateyInstall from existing environment variable"
-        }
-        Write-Host "choco.exe not found, install it to $chocolateyInstall...";
-        [System.Environment]::SetEnvironmentVariable("ChocolateyInstall", $chocolateyInstall, "Machine");
-        $env:ChocolateyInstall = $chocolateyInstall;
+        Write-Host "choco.exe not found, install it...";
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
         $chocoExe = (Get-Command "choco").Path;
