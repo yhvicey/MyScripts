@@ -59,7 +59,7 @@ function InstallFont(
 }
 
 # Download Cascadia Code NF, Cascadia Code PL and Cascadia Mono PL
-$tempFolder = "$PSScriptRoot/.t";
+$tempFolder = "$env:TEMP/.t";
 try {
     if (Test-Path $tempFolder) {
         Remove-Item -Recurse $tempFolder;
