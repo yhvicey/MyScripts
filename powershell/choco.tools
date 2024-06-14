@@ -17,3 +17,4 @@ python3 --params "/NoLockDown"
 sbt
 sudo
 sysinternals
+vswhere
