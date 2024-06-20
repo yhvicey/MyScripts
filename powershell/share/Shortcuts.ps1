@@ -1,49 +1,99 @@
 function GoToDesktop {
-    Push-Location $global:Desktop;
+    Set-Location $global:Desktop;
 }
 Set-Alias "cdd" "GoToDesktop"
 
 function GoToGithubRepos {
-    Push-Location $global:GithubRepos;
+    Set-Location $global:GithubRepos;
 }
 Set-Alias "cdg" "GoToGithubRepos"
 
 function GoToMyScriptsRoot {
-    Push-Location $global:MyScriptsRoot
+    Set-Location $global:MyScriptsRoot
 }
 Set-Alias "cdmyscripts" "GoToMyScriptsRoot"
 
 function GoToOneDriveMicrosoftProjects {
-    Push-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
+    Set-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
 }
-Set-Alias "cdomp" "GoToOneDriveMicrosoftProjects"
+Set-Alias "cdodmp" "GoToOneDriveMicrosoftProjects"
 
 function GoToOneDriveProjects {
-    Push-Location "$env:USERPROFILE/OneDrive/Projects"
+    Set-Location "$env:USERPROFILE/OneDrive/Projects"
 }
-Set-Alias "cdop" "GoToOneDriveProjects"
+Set-Alias "cdodp" "GoToOneDriveProjects"
 
 function GoToParent {
-    Push-Location "..";
+    Set-Location "..";
 }
 Set-Alias ".." "GoToParent"
 
 function GoToPlayground {
-    Push-Location $global:Playground;
+    Set-Location $global:Playground;
 }
 Set-Alias "cdp" "GoToPlayground"
 
 function GoToTempDirs {
-    Push-Location $global:TempDirs;
+    Set-Location $global:TempDirs;
 }
 Set-Alias "cdt" "GoToTempDirs"
 
 function GoToToolsFolder {
-    Push-Location $global:ToolsFolder
+    Set-Location $global:ToolsFolder
 }
 Set-Alias "cdtool" "GoToToolsFolder"
 
 function GoToWorkspace {
-    Push-Location $global:Workspace;
+    Set-Location $global:Workspace;
 }
 Set-Alias "cdw" "GoToWorkspace"
+
+function PushLocationToDesktop {
+    Set-Location $global:Desktop;
+}
+Set-Alias "pd" "PushLocationToDesktop"
+
+function PushLocationToGithubRepos {
+    Set-Location $global:GithubRepos;
+}
+Set-Alias "pg" "PushLocationToGithubRepos"
+
+function PushLocationToMyScriptsRoot {
+    Set-Location $global:MyScriptsRoot
+}
+Set-Alias "pmyscripts" "PushLocationToMyScriptsRoot"
+
+function PushLocationToOneDriveMicrosoftProjects {
+    Set-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
+}
+Set-Alias "podmp" "PushLocationToOneDriveMicrosoftProjects"
+
+function PushLocationToOneDriveProjects {
+    Set-Location "$env:USERPROFILE/OneDrive/Projects"
+}
+Set-Alias "podp" "PushLocationToOneDriveProjects"
+
+function PushLocationToParent {
+    Set-Location "..";
+}
+Set-Alias "p.." "PushLocationToParent"
+
+function PushLocationToPlayground {
+    Set-Location $global:Playground;
+}
+Set-Alias "pp" "PushLocationToPlayground"
+
+function PushLocationToTempDirs {
+    Set-Location $global:TempDirs;
+}
+Set-Alias "pt" "PushLocationToTempDirs"
+
+function PushLocationToToolsFolder {
+    Set-Location $global:ToolsFolder
+}
+Set-Alias "ptool" "PushLocationToToolsFolder"
+
+function PushLocationToWorkspace {
+    Set-Location $global:Workspace;
+}
+Set-Alias "pw" "PushLocationToWorkspace"
