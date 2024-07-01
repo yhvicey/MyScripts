@@ -19,17 +19,13 @@ if (-not $autorunProp) {
 else {
     $entries = @($autorunProp.Autorun.Split("&"))
     $updatedEntries = @()
-    $scriptInstalled = $false
     foreach ($entry in $entries) {
         if (-not $scriptInstalled -and $entry.Contains($autorunScript)) {
-            $entry = $autorunCommand
-            $scriptInstalled = $true
+            continue
         }
         $updatedEntries += $entry
     }
-    if (-not $scriptInstalled) {
-        $updatedEntries += $autorunCommand
-    }
+    $updatedEntries = @($autorunCommand) + @($updatedEntries)
     $autorunPropValue = [string]::Join("&", $updatedEntries)
     Write-Host "Updating Autorun entry, was $($autorunProp.Autorun), new value $autorunPropValue";
     Set-ItemProperty -Path $cmdKeyPath -Name "Autorun" -Value "$autorunPropValue" -Force | Out-Null;

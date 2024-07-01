@@ -1,0 +1,5 @@
+$if clink
+
+"\t": complete
+
+$endif
