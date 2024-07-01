@@ -55,6 +55,7 @@ $foldersToLoadScriptsFrom = @(
     "$MyScriptsRoot/powershell/core",
     "$MyScriptsRoot/powershell/share",
     "$MyScriptsRoot/powershell/$($CurrentOS.ToLower())"
+    "$MyScriptsRoot/powershell/private"
 );
 foreach ($folder in $foldersToLoadScriptsFrom) {
     if (-not (Test-Path $folder)) {
