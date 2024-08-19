@@ -4,15 +4,17 @@ function SetupMavenAuth(
     [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::User
 ) {
     $script:ErrorActionPreference = "Stop"
-    $token = az account get-access-token `
-        --scope "499b84ac-1321-427f-aa17-267ca6975798/.default" `
-        --query accessToken `
-        -o tsv
-    [xml]$cfg = Get-Content "$HOME/.m2/settings.xml"
+    $m2File = "$HOME/.m2/settings.xml"
+    if (-not (Test-Path $m2File)) {
+        Write-Warning "Maven settings file ($m2File) not found."
+        return
+    }
+    $token = GetAzureDevOpsToken
+    [xml]$cfg = Get-Content $m2File
     $cfg.settings.servers.server | ForEach-Object {
         $_.password = $token.ToString()
     }
-    $cfg.Save("$HOME/.m2/settings.xml");
+    $cfg.Save($m2File);
 
     if ($SetEnvironmentVariable) {
         [System.Environment]::SetEnvironmentVariable($EnvironmentVariable, $token.ToString(), $Target)
