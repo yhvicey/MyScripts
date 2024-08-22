@@ -3,6 +3,9 @@ function SetupNpmAzureDevOpsAuth(
 ) {
     $script:ErrorActionPreference = "Stop"
     $globalNpmrcFile = "$HOME/.npmrc"
+    if (-not (Test-Path $globalNpmrcFile)) {
+        New-Item $globalNpmrcFile -ItemType File
+    }
     if (-not (Test-Path $LocalNpmrcFile)) {
         Write-Warning "Npm settings file ($LocalNpmrcFile) not found."
         return
