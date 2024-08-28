@@ -16,7 +16,9 @@ function RefreshNpmAzureDevOpsTokens(
         $isAuthTokenLine = $line.Contains(":_authToken=")
         if ($isAdoLine -and $isAuthTokenLine) {
             $lineBreakIdx = $line.IndexOf(":_authToken=")
-            $line = "$($line.SubString(0, $lineBreakIdx)):_authToken=$token"
+            $registry = $line.SubString(0, $lineBreakIdx)
+            Write-Host "Updating auth token for $registry"
+            $line = "$($registry):_authToken=$token"
         }
         $newLines += $line
     }

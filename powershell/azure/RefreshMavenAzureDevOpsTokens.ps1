@@ -12,6 +12,7 @@ function RefreshMavenAzureDevOpsTokens(
     $token = GetAzureDevOpsToken
     [xml]$cfg = Get-Content $m2File
     $cfg.settings.servers.server | ForEach-Object {
+        Write-Host "Updating password for $($_.id)"
         $_.password = $token.ToString()
     }
     $cfg.Save($m2File);
