@@ -23,8 +23,8 @@ function GithubCode(
     }
 
     $localFolder = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($global:GithubRepos, $Org, $Repo)) -replace ".git$"
-    if (-not (Test-Path $localFolder)) {
-        if (Confirm "Repo not exists, clone to local?" -DefaultResult $true) {
+    if ($-not (Test-Path $localFolder)) {
+        if ($CloneIfNotExists -or (Confirm "Repo not exists, clone to local?" -DefaultResult $true)) {
             GithubClone -RepoOrOrgOrUrl:$RepoOrOrgOrUrl -Repo:$Repo
         }
         else {
