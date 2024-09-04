@@ -1,6 +1,7 @@
 function NewStrongPassword(
     [int]$Length = 32,
-    [switch]$WriteToConsole = $false
+    [switch]$WriteToConsole = $false,
+    [switch]$NoSpecialCharacters = $false
 ) {
     if ($Length -lt 16) {
         Write-Error "Length must be longer than 16.";
@@ -67,7 +68,12 @@ function NewStrongPassword(
         $numberCharRange = $Length - $script:numberCharCount;
         $lowerCharRange = $Length - $script:lowerCharCount;
         $upperCharRange = $Length - $script:upperCharCount;
-        $specialCharRange = $Length - $script:specialCharCount;
+        if ($NoSpecialCharacters) {
+            $specialCharRange = 0;
+        }
+        else {
+            $specialCharRange = $Length - $script:specialCharCount;
+        }
         [void]$builder.Append((PickCharacter -range1 $numberCharRange -range2 $lowerCharRange -range3 $upperCharRange -range4 $specialCharRange));
     }
 
