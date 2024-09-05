@@ -1,6 +1,6 @@
 function DecryptPfxFile(
     [string]$PfxFile,
-    [switch]$PrintBase64EncodedString = $False
+    [switch]$SkipBase64Encoding = $False
 ) {
     if (-not (Test-Path $PfxFile)) {
         throw "File not found"
@@ -26,12 +26,20 @@ function DecryptPfxFile(
         }
     }
 
-    if ($PrintBase64EncodedString) {
+    if (-not $SkipBase64Encoding) {
         $crtBase64Encoded = Get-Content -Raw "$fileName.crt" | EncodeToBase64
         $keyBase64Encoded = Get-Content -Raw "$fileName.key" | EncodeToBase64
-        Write-Host "Cert:"
-        Write-Host $crtBase64Encoded
-        Write-Host "Key:"
-        Write-Host $keyBase64Encoded
+        try {
+            Set-Content -Value $crtBase64Encoded -Path "$fileName.crt.b64"
+            Set-Content -Value $keyBase64Encoded -Path "$fileName.key.b64"
+        }
+        catch {
+            if (Test-Path "$fileName.crt.b64") {
+                Remove-Item "$fileName.crt.b64"
+            }
+            if (Test-Path "$fileName.key.b64") {
+                Remove-Item "$fileName.key.b64"
+            }
+        }
     }
 }
