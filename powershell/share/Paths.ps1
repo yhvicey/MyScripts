@@ -18,3 +18,11 @@ if ($vswhereCmd) {
     $msbuildBinPath = "$installationPath\MSBuild\Current\Bin"
     AddToPath "$msbuildBinPath"
 }
+
+if ($env:JAVA_HOME) {
+    AddToPath "$env:JAVA_HOME/bin"
+}
+
+if ($env:HADOOP_HOME) {
+    AddToPath "$env:HADOOP_HOME/bin"
+}
