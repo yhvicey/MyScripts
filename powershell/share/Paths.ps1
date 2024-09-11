@@ -26,3 +26,7 @@ if ($env:JAVA_HOME) {
 if ($env:HADOOP_HOME) {
     AddToPath "$env:HADOOP_HOME/bin"
 }
+
+if ($env:SPARK_HOME) {
+    AddToPath "$env:SPARK_HOME/bin"
+}
