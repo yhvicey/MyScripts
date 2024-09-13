@@ -10,5 +10,5 @@ function Replicate(
         throw "Destination path is not a directory."
     }
 
-    robocopy "$Source" "$Destination" /Z /E /MT
+    robocopy $Source.TrimEnd("\") $Destination.TrimEnd("\") /Z /E /MT
 }
