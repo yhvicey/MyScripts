@@ -1,4 +1,4 @@
-function Robocopy(
+function Replicate(
     [string]$Source,
     [string]$Destination
 ) {
