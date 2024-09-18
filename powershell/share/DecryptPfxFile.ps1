@@ -29,9 +29,11 @@ function DecryptPfxFile(
     if (-not $SkipBase64Encoding) {
         $crtBase64Encoded = Get-Content -Raw "$fileName.crt" | EncodeToBase64
         $keyBase64Encoded = Get-Content -Raw "$fileName.key" | EncodeToBase64
+        $pemBase64Encoded = Get-Content -Raw "$fileName.pem" | EncodeToBase64
         try {
             Set-Content -Value $crtBase64Encoded -Path "$fileName.crt.b64"
             Set-Content -Value $keyBase64Encoded -Path "$fileName.key.b64"
+            Set-Content -Value $pemBase64Encoded -Path "$fileName.pem.b64"
         }
         catch {
             if (Test-Path "$fileName.crt.b64") {
@@ -39,6 +41,9 @@ function DecryptPfxFile(
             }
             if (Test-Path "$fileName.key.b64") {
                 Remove-Item "$fileName.key.b64"
+            }
+            if (Test-Path "$fileName.pem.b64") {
+                Remove-Item "$fileName.pem.b64"
             }
         }
     }
