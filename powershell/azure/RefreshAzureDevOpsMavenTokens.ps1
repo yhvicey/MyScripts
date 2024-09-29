@@ -1,4 +1,4 @@
-function RefreshMavenAzureDevOpsTokens(
+function RefreshAzureDevOpsMavenTokens(
     [string]$EnvironmentVariable = "MAVEN_TOKEN",
     [switch]$SetEnvironmentVariable = $false,
     [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::User

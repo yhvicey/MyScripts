@@ -1,4 +1,4 @@
-function SetupNpmAzureDevOpsAuth(
+function SetupAzureDevOpsNpmAuth(
     [string]$LocalNpmrcFile = ".npmrc"
 ) {
     $script:ErrorActionPreference = "Stop"

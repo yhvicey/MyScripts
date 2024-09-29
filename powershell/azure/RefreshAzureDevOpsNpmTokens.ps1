@@ -1,4 +1,4 @@
-function RefreshNpmAzureDevOpsTokens(
+function RefreshAzureDevOpsNpmTokens(
     [string]$EnvironmentVariable = "NPM_TOKEN",
     [switch]$SetEnvironmentVariable = $false,
     [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::User
