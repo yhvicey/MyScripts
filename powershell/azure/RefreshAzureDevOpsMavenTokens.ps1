@@ -22,3 +22,4 @@ function RefreshAzureDevOpsMavenTokens(
         refreshenv
     }
 }
+Set-Alias "ramt" "RefreshAzureDevOpsMavenTokens"

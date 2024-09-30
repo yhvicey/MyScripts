@@ -29,3 +29,4 @@ function RefreshAzureDevOpsNpmTokens(
         refreshenv
     }
 }
+Set-Alias "rant" "RefreshAzureDevOpsNpmTokens"
