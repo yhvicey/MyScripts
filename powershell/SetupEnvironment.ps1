@@ -118,4 +118,10 @@ if (-not (Test-Path $TempDirs)) {
 if (-not (Test-Path $ToolsBinFolder)) {
     New-Item $ToolsBinFolder -ItemType Directory | Out-Null;
 }
+# Set environment varibales
+[Environment]::SetEnvironmentVariable("Workspace", $Workspace, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("Playground", $Playground, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GithubRepos", $GithubRepos, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("TempDirs", $TempDirs, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("ToolsBinFolder", $ToolsBinFolder, [System.EnvironmentVariableTarget]::User)
 #endregion
