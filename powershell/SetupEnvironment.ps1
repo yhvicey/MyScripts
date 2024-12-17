@@ -15,10 +15,10 @@ if (-not (Test-Path $DevFolder)) {
     New-Item $DevFolder -ItemType Directory | Out-Null;
 }
 if (-not $ToolsFolder) {
-    $ToolsFolder = Read-Host -Prompt "Input tools folder path [D:/Tools]";
+    $ToolsFolder = Read-Host -Prompt "Input tools folder path [$HOME/Tools]";
 }
 if (-not $ToolsFolder) {
-    $ToolsFolder = "D:/Tools";
+    $ToolsFolder = "$HOME/Tools";
 }
 $ToolsFolder = $ToolsFolder.TrimEnd("/").TrimEnd("\");
 if (-not (Test-Path $ToolsFolder)) {
