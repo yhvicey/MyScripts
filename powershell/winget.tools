@@ -1,3 +1,6 @@
 CrystalRich.LockHunter
 Microsoft.AzureCLI
 chrisant996.Clink
+Microsoft.DotNet.SDK.3_1
+Microsoft.DotNet.SDK.6
+Microsoft.DotNet.SDK.8
