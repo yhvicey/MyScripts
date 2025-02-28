@@ -60,18 +60,28 @@ if (-not $SkipInstallPhase) {
         $installedPath = "$($module.FullName)/installed"
         $installed = Test-Path $installedPath
         if ($installed) {
-            if (Test-Path "$($module.FullName)/Upgrade.ps1") {
+            if (-not (Test-Path "$($module.FullName)/skip_upgrade")) {
+                $upgradeScript = "$($module.FullName)/Upgrade.ps1"
+                if (-not (Test-Path $upgradeScript)) {
+                    $upgradeScript = "$($module.FullName)/Install.ps1"
+                }
                 Write-Host "Upgrading $($module.Name)...";
-                & "$($module.FullName)/Upgrade.ps1"
+                & $upgradeScript
             }
             else {
-                Write-Host "$($module.Name) already installed and no upgrade script is provided";
+                Write-Host "$($module.Name) already installed and upgrade is skipped";
             }
         }
         elseif (Test-Path "$($module.FullName)/Install.ps1") {
-            Write-Host "Installing $($module.Name)...";
-            & "$($module.FullName)/Install.ps1"
-            Set-Content $installedPath ([datetime]::UtcNow) -Force
+            try {
+                Write-Host "Installing $($module.Name)...";
+                & "$($module.FullName)/Install.ps1"
+                Set-Content $installedPath ([datetime]::UtcNow) -Force
+            }
+            catch {
+                Write-Error "Failed to install module $module"
+                Write-Error $_
+            }
         }
         else {
             Write-Host "Module $module's install script is not provided, skipping";
