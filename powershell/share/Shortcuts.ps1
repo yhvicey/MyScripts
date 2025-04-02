@@ -13,11 +13,6 @@ function GoToMyScriptsRoot {
 }
 Set-Alias "cdmyscripts" "GoToMyScriptsRoot"
 
-function GoToOneDriveMicrosoftProjects {
-    Set-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
-}
-Set-Alias "cdodmp" "GoToOneDriveMicrosoftProjects"
-
 function GoToOneDriveProjects {
     Set-Location "$env:USERPROFILE/OneDrive/Projects"
 }
@@ -62,11 +57,6 @@ function PushLocationToMyScriptsRoot {
     Set-Location $global:MyScriptsRoot
 }
 Set-Alias "pmyscripts" "PushLocationToMyScriptsRoot"
-
-function PushLocationToOneDriveMicrosoftProjects {
-    Set-Location "$env:USERPROFILE/OneDrive - Microsoft/Projects"
-}
-Set-Alias "podmp" "PushLocationToOneDriveMicrosoftProjects"
 
 function PushLocationToOneDriveProjects {
     Set-Location "$env:USERPROFILE/OneDrive/Projects"
