@@ -11,6 +11,7 @@ if (-not $DevFolder) {
     $DevFolder = "D:/Dev";
 }
 $DevFolder = $DevFolder.TrimEnd("/").TrimEnd("\");
+[System.Environment]::SetEnvironmentVariable("DEV_HOME", $DevFolder, [System.EnvironmentVariableTarget]::User)
 if (-not (Test-Path $DevFolder)) {
     New-Item $DevFolder -ItemType Directory | Out-Null;
 }
