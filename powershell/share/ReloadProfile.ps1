@@ -4,3 +4,4 @@ function ReloadProfile {
     }
     . $PROFILE
 }
+Set-Alias "rel" "ReloadProfile"
