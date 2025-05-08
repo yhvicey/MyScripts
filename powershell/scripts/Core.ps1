@@ -5,9 +5,9 @@ function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target 
     else {
         $normalizedFolderPath = [System.IO.Path]::GetFullPath($Folder);
     }
-    Write-Debug "Normalized path: $normalizedFolderPath"
+    Write-Verbose "Normalized path: $normalizedFolderPath"
     $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
-    Write-Debug "Current PATH: $currentPath"
+    Write-Verbose "Current PATH: $currentPath"
 
     if (-not [System.Collections.Generic.HashSet[string]]::new($currentPath.Split([System.Environment]::PathSeparator)).Contains($normalizedFolderPath)) {
         if ($Target -ne [System.EnvironmentVariableTarget]::Process) {

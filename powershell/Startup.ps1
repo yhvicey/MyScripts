@@ -31,28 +31,35 @@ finally {
 if ($repoVersion -ne $currentVersion) {
     & "$MyScriptsRoot/powershell/SetupEnvironment.ps1" -SkipInstallPhase
 }
-
 #endregion
 
 #region Load scripts & modules
+. "$MyScriptsRoot/powershell/scripts/Core.ps1"
 $foldersToLoadScriptsFrom = @(
-    "$MyScriptsRoot/powershell/core",
-    "$MyScriptsRoot/powershell/share",
-    "$MyScriptsRoot/powershell/$($CurrentOS.ToLower())"
-    "$MyScriptsRoot/powershell/azure"
-    "$MyScriptsRoot/powershell/private"
+    "$MyScriptsRoot/powershell/scripts/share",
+    "$MyScriptsRoot/powershell/scripts/$($CurrentOS.ToLower())"
+    "$MyScriptsRoot/powershell/scripts/private"
 );
+$autoLoadScripts = @(
+    "Aliases.ps1",
+    "Paths.ps1",
+    "Shortcuts.ps1",
+    "Startup.ps1"
+)
 foreach ($folder in $foldersToLoadScriptsFrom) {
     if (-not (Test-Path $folder)) {
         continue;
     }
-    foreach ($scriptPath in (Get-ChildItem -Recurse $folder -Filter "*.ps1")) {
-        try {
-            Write-Debug "Loading $($scriptPath.FullName)";
-            . $scriptPath.FullName;
-        }
-        catch {
-            Write-Warning "Failed to load $($scriptPath.FullName), error: $_";
+    AddToPath $folder;
+    foreach ($autoLoadScript in $autoLoadScripts) {
+        if (Test-Path "$folder/$autoLoadScript") {
+            try {
+                Write-Debug "Loading $autoLoadScript for $folder";
+                . "$folder/$autoLoadScript";
+            }
+            catch {
+                Write-Warning "Failed to load $autoLoadScript for $folder, error: $_";
+            }
         }
     }
 }
