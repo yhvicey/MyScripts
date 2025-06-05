@@ -17,3 +17,10 @@ function gcnb(
     [string] $name) {
     git checkout branch -b $name $args;
 }
+
+function gwip() {
+    $message = "WIP: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    git add *
+    git commit -am $message $args
+    git push origin
+}
