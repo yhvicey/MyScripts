@@ -20,7 +20,9 @@ function gcnb(
 
 function gwip() {
     $message = "WIP: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    $branchName = "$(git rev-parse --abbrev-ref HEAD)-wip"
+    git checkout -b $branchName
     git add *
-    git commit -am $message $args
-    git push origin
+    git commit -am $message
+    git push origin $branchName
 }
