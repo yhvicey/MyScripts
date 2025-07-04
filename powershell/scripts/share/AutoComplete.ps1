@@ -1,5 +1,10 @@
 if (Get-Command "dotnet-suggest" -errorAction SilentlyContinue) {
+    # Check if the dotnet-suggest tool is working properly
     $availableToComplete = (dotnet-suggest list) | Out-String
+    if ($LASTEXITCODE -ne 0) {
+        Write-Debug "dotnet-suggest tool is not working properly. Please ensure it is installed correctly."
+        return
+    }
     $availableToCompleteArray = $availableToComplete.Split([Environment]::NewLine, [System.StringSplitOptions]::RemoveEmptyEntries)
 
     Register-ArgumentCompleter -Native -CommandName $availableToCompleteArray -ScriptBlock {
@@ -13,8 +18,8 @@ if (Get-Command "dotnet-suggest" -errorAction SilentlyContinue) {
     }
 }
 else {
-    "Unable to provide System.CommandLine tab completion support unless the [dotnet-suggest] tool is first installed."
-    "See the following for tool installation: https://www.nuget.org/packages/dotnet-suggest"
+    Write-Debug "Unable to provide System.CommandLine tab completion support unless the [dotnet-suggest] tool is first installed."
+    Write-Debug "See the following for tool installation: https://www.nuget.org/packages/dotnet-suggest"
 }
 $env:DOTNET_SUGGEST_SCRIPT_VERSION = "1.0.2"
 
