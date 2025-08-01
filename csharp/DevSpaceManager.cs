@@ -568,11 +568,42 @@ public class Program
 
                         if (!string.IsNullOrEmpty(currentBranch) && currentBranch != repoInfo.Branch)
                         {
-                            lock (lockObject)
+                            if (dryRun)
                             {
-                                warnings++;
+                                lock (lockObject)
+                                {
+                                    warnings++;
+                                }
+                                AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Branch mismatch ([yellow]{currentBranch}[/] → [cyan]{repoInfo.Branch}[/]) - would switch");
                             }
-                            AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Branch mismatch ([yellow]{currentBranch}[/] → [cyan]{repoInfo.Branch}[/])");
+                            else
+                            {
+                                // Attempt to switch to the correct branch
+                                progressTask.Description = $"[cyan]{folderName}[/]: Switching branch for [dim]{relativePath}[/]...";
+
+                                var (checkoutSuccess, checkoutOutput) = await Task.Run(() => ExecuteCommand("git", $"checkout {repoInfo.Branch}", fullPath));
+                                if (!checkoutSuccess)
+                                {
+                                    // Try to create and checkout the branch from origin
+                                    var (createSuccess, createOutput) = await Task.Run(() => ExecuteCommand("git", $"checkout -b {repoInfo.Branch} origin/{repoInfo.Branch}", fullPath));
+                                    if (!createSuccess)
+                                    {
+                                        lock (lockObject)
+                                        {
+                                            warnings++;
+                                        }
+                                        AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Could not switch to branch '{repoInfo.Branch}': {checkoutOutput}");
+                                    }
+                                    else
+                                    {
+                                        AnsiConsole.MarkupLine($"  [green]✓[/] [dim]{relativePath}[/]: Switched to branch '{repoInfo.Branch}'");
+                                    }
+                                }
+                                else
+                                {
+                                    AnsiConsole.MarkupLine($"  [green]✓[/] [dim]{relativePath}[/]: Switched to branch '{repoInfo.Branch}'");
+                                }
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(currentRemote) && currentRemote != repoInfo.Remote)
@@ -726,11 +757,40 @@ public class Program
 
                         if (!string.IsNullOrEmpty(currentBranch) && currentBranch != repoInfo.Branch)
                         {
-                            lock (lockObject)
+                            if (dryRun)
                             {
-                                warnings++;
+                                lock (lockObject)
+                                {
+                                    warnings++;
+                                }
+                                AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Branch mismatch ([yellow]{currentBranch}[/] → [cyan]{repoInfo.Branch}[/]) - would switch");
                             }
-                            AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Branch mismatch ([yellow]{currentBranch}[/] → [cyan]{repoInfo.Branch}[/])");
+                            else
+                            {
+                                // Attempt to switch to the correct branch
+                                var (checkoutSuccess, checkoutOutput) = await Task.Run(() => ExecuteCommand("git", $"checkout {repoInfo.Branch}", fullPath));
+                                if (!checkoutSuccess)
+                                {
+                                    // Try to create and checkout the branch from origin
+                                    var (createSuccess, createOutput) = await Task.Run(() => ExecuteCommand("git", $"checkout -b {repoInfo.Branch} origin/{repoInfo.Branch}", fullPath));
+                                    if (!createSuccess)
+                                    {
+                                        lock (lockObject)
+                                        {
+                                            warnings++;
+                                        }
+                                        AnsiConsole.MarkupLine($"  [orange3]⚠[/] [dim]{relativePath}[/]: Could not switch to branch '{repoInfo.Branch}': {checkoutOutput}");
+                                    }
+                                    else
+                                    {
+                                        AnsiConsole.MarkupLine($"  [green]✓[/] [dim]{relativePath}[/]: Switched to branch '{repoInfo.Branch}'");
+                                    }
+                                }
+                                else
+                                {
+                                    AnsiConsole.MarkupLine($"  [green]✓[/] [dim]{relativePath}[/]: Switched to branch '{repoInfo.Branch}'");
+                                }
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(currentRemote) && currentRemote != repoInfo.Remote)
@@ -1027,7 +1087,32 @@ public class Program
                     {
                         if (currentBranch != repoInfo.Branch)
                         {
-                            Console.WriteLine($"    WARNING: Current branch '{currentBranch}' differs from backup branch '{repoInfo.Branch}'");
+                            if (dryRun)
+                            {
+                                Console.WriteLine($"    WARNING: Current branch '{currentBranch}' differs from backup branch '{repoInfo.Branch}' - would switch");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"    Status: Switching from branch '{currentBranch}' to '{repoInfo.Branch}'...");
+                                var (checkoutSuccess, checkoutOutput) = ExecuteCommand("git", $"checkout {repoInfo.Branch}", fullPath);
+                                if (!checkoutSuccess)
+                                {
+                                    // Try to create and checkout the branch from origin
+                                    var (createSuccess, createOutput) = ExecuteCommand("git", $"checkout -b {repoInfo.Branch} origin/{repoInfo.Branch}", fullPath);
+                                    if (!createSuccess)
+                                    {
+                                        Console.WriteLine($"    WARNING: Could not switch to branch '{repoInfo.Branch}': {checkoutOutput}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"    Status: Successfully switched to branch '{repoInfo.Branch}'");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"    Status: Successfully switched to branch '{repoInfo.Branch}'");
+                                }
+                            }
                         }
                         else
                         {
