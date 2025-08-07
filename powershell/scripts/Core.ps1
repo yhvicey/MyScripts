@@ -27,13 +27,22 @@ function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target 
 }
 
 function Confirm([string]$Message = "", [bool]$DefaultResult = $false, [switch]$NewLine = $false) {
+    $Message = $Message.Trim()
     if (-not [string]::IsNullOrEmpty($Message)) {
-        $Message = "$Message "
+        if ($NewLine) {
+            $Message = "$Message`n"
+        }
+        else {
+            $Message = "$Message "
+        }
     }
-    if ($NewLine) {
-        $Message = "$Message`n"
+    if ($DefaultResult) {
+        $prompt = "$($Message)Confirm? [Y/n]"
     }
-    $userChoice = Read-Host -Prompt "$($Message)Confirm? [y/n]"
+    else {
+        $prompt = "$($Message)Confirm? [y/N]"
+    }
+    $userChoice = Read-Host -Prompt $prompt
     if ($userChoice -match "(y|Y)") {
         return $true
     }
