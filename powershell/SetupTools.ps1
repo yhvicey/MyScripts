@@ -52,7 +52,10 @@ if (-not $SkipWinget) {
     if (Test-Path $wingetExe) {
         # Install winget tools
         foreach ($wingetToolInstallExp in (Get-Content "$PSScriptRoot/winget.tools")) {
-            $installExpression = "& $wingetExe install --accept-package-agreements --exact --id $wingetToolInstallExp";
+            $parts = $wingetToolInstallExp -split ',';
+            $wingetPackageId = $parts[0]
+            $additionalArgs = $parts[1]
+            $installExpression = "& $wingetExe install --accept-package-agreements --exact --id $wingetPackageId $additionalArgs";
             Write-Host "Running: $installExpression"
             Invoke-Expression $installExpression
         }
