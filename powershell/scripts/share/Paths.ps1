@@ -17,3 +17,14 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
     $scriptsRoot = python -c "import os,sysconfig;print(sysconfig.get_path('scripts',f'{os.name}_user'))"
     AddToPath $scriptsRoot
 }
+
+if (Test-Path "$env:PROGRAMFILES\JetBrains") {
+    $instances = Get-ChildItem "$env:PROGRAMFILES\JetBrains" -Directory | ForEach-Object {
+        @{
+            Name    = $_.Name
+            Version = [version]::Parse(($_.Name -replace "[a-z ]", ""))
+        }
+    }
+    $latestInstance = $instances | Sort-Object Version -Descending | Select-Object -First 1
+    AddToPath "$env:PROGRAMFILES\JetBrains\$($latestInstance.Name)\bin"
+}
