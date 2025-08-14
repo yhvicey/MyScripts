@@ -21,10 +21,17 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
 if (Test-Path "$env:PROGRAMFILES\JetBrains") {
     $instances = Get-ChildItem "$env:PROGRAMFILES\JetBrains" -Directory | ForEach-Object {
         @{
-            Name    = $_.Name
-            Version = [version]::Parse(($_.Name -replace "[a-z ]", ""))
+            FullName = $_.FullName
+            Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
         }
     }
+    $x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
+        @{
+            FullName = $_.FullName
+            Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
+        }
+    }
+    $instances += $x86Instances
     $latestInstance = $instances | Sort-Object Version -Descending | Select-Object -First 1
-    AddToPath "$env:PROGRAMFILES\JetBrains\$($latestInstance.Name)\bin"
+    AddToPath "$($latestInstance.FullName)\bin"
 }
