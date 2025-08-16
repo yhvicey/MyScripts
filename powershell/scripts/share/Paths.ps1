@@ -19,13 +19,13 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
 }
 
 if (Test-Path "$env:PROGRAMFILES\JetBrains") {
-    $instances = Get-ChildItem "$env:PROGRAMFILES\JetBrains" -Directory | ForEach-Object {
+    [array]$instances = Get-ChildItem "$env:PROGRAMFILES\JetBrains" -Directory | ForEach-Object {
         @{
             FullName = $_.FullName
             Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
         }
     }
-    $x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
+    [array]$x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
         @{
             FullName = $_.FullName
             Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
