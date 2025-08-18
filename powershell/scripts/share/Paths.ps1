@@ -35,3 +35,7 @@ if (Test-Path "$env:PROGRAMFILES\JetBrains") {
     $latestInstance = $instances | Sort-Object Version -Descending | Select-Object -First 1
     AddToPath "$($latestInstance.FullName)\bin"
 }
+
+if (Test-Path "C:\msys64") {
+    AddToPath "C:\msys64\usr\bin"
+}
