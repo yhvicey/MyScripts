@@ -134,3 +134,41 @@ function DecodeFromBase64(
     }
     End {}
 }
+
+function ReadHostWithOptions {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Prompt,
+        [Parameter(Mandatory = $true)]
+        [string[]]$Choices,
+        [switch]$AllowManualInput,
+        $ManualInputLabel = "Type my own"
+    )
+
+    $x = 0;
+    $Menu = @()
+    $manualInputLabel = "<" + $manualInputLabel + ">"
+    foreach ($item in $Choices) {
+        $x += 1
+        $row = New-Object PSObject -Property @{
+            Option = $item;
+            Index  = $x
+        }
+        $Menu += $row
+    }
+    if ($AllowManualInput) {
+        $row = New-Object PSObject -Property @{
+            Option = $manualInputLabel;
+            Index  = ($x + 1)
+        }
+        $Menu += $row
+    }
+    $Menu | ForEach-Object {
+        Write-Host "$($_.Index): $($_.Option)"
+    }
+    do {
+        $select = Read-Host -Prompt $Prompt
+        $allowedIndexes = $Menu | Select-Object -ExpandProperty Index
+    } until ($allowedIndexes -contains $select)
+    return $Menu | Where-Object { $_.Index -eq $select } | Select-Object -ExpandProperty Option
+}

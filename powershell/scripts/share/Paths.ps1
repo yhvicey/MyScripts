@@ -25,11 +25,16 @@ if (Test-Path "$env:PROGRAMFILES\JetBrains") {
             Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
         }
     }
-    [array]$x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
-        @{
-            FullName = $_.FullName
-            Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
+    if (Test-Path "${env:ProgramFiles(x86)}\JetBrains") {
+        [array]$x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
+            @{
+                FullName = $_.FullName
+                Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
+            }
         }
+    }
+    else {
+        $x86Instances = @()
     }
     $instances += $x86Instances
     $latestInstance = $instances | Sort-Object Version -Descending | Select-Object -First 1
