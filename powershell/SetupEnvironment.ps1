@@ -43,7 +43,9 @@ $startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFol
 $setupFlag = "MY_SCRIPTS_SETUP_DONE"
 $startupScriptContent | Out-File -NoNewline -Force $startupScript;
 if (-not $SkipInstallPhase) {
-    Register-PSRepository -Default
+    if (-not (Get-PSRepository PSGallery -ErrorAction SilentlyContinue)) {
+        Register-PSRepository -Default
+    }
     # Install modules
     if ((Get-PSRepository PSGallery).InstallationPolicy -ne "Trusted") {
         Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"

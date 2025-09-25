@@ -1,5 +1,6 @@
 Bruno.Bruno
 CrystalRich.LockHunter
+EclipseAdoptium.Temurin.8.JDK
 JetBrains.IntelliJIDEA.Community,--uninstall-previous
 MSYS2.MSYS2
 Microsoft.AzureCLI
@@ -10,6 +11,9 @@ Microsoft.DotNet.SDK.3_1
 Microsoft.DotNet.SDK.6
 Microsoft.DotNet.SDK.8
 Microsoft.DotNet.SDK.Preview
+Microsoft.OpenJDK.11
+Microsoft.OpenJDK.17
+Microsoft.OpenJDK.21
 Microsoft.Sysinternals.Suite
 Microsoft.VisualStudioCode
 chrisant996.Clink
