@@ -2,7 +2,7 @@ AddToPath ".";
 AddToPath "$global:ToolsBinFolder";
 
 if ($env:JAVA_HOME) {
-    AddToPath "$env:JAVA_HOME/bin"
+    AddToPath "$env:JAVA_HOME/bin" -Prepend -Force
 }
 
 if ($env:HADOOP_HOME) {

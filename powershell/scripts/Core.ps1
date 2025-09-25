@@ -1,4 +1,4 @@
-function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process, [switch]$Prepend = $false) {
+function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target = [EnvironmentVariableTarget]::Process, [switch]$Prepend = $false, [switch]$Force = $false) {
     if ($Folder -eq ".") {
         $normalizedFolderPath = $Folder
     }
@@ -9,7 +9,7 @@ function AddToPath([string] $Folder, [System.EnvironmentVariableTarget] $Target 
     $currentPath = [Environment]::GetEnvironmentVariable("PATH", $Target)
     Write-Verbose "Current PATH: $currentPath"
 
-    if (-not [System.Collections.Generic.HashSet[string]]::new($currentPath.Split([System.Environment]::PathSeparator)).Contains($normalizedFolderPath)) {
+    if ($Force -or -not [System.Collections.Generic.HashSet[string]]::new($currentPath.Split([System.IO.Path]::PathSeparator)).Contains($normalizedFolderPath)) {
         if ($Target -ne [System.EnvironmentVariableTarget]::Process) {
             Write-Debug "Adding $normalizedFolderPath to PATH, target $Target, prepend $Prepend";
         }
