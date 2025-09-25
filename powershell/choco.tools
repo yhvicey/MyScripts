@@ -1,7 +1,5 @@
-7zip
 azure-kubelogin
 dbeaver
-everything
 fzf
 git
 gnuwin32-coreutils.install
@@ -9,12 +7,10 @@ ilspy
 kubernetes-cli
 kubernetes-helm
 msbuild-structured-log-viewer
-nodejs-lts
 nuget-credentialprovider-vss
 nuget.commandline
 nugetpackageexplorer
 openssl
-python3 --params "/NoLockDown"
 sbt
 sudo
 vswhere
