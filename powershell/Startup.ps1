@@ -44,7 +44,8 @@ $autoLoadScripts = @(
     "Aliases.ps1",
     "Paths.ps1",
     "Shortcuts.ps1",
-    "Startup.ps1"
+    "Startup.ps1",
+    "Check.ps1"
 )
 foreach ($folder in $foldersToLoadScriptsFrom) {
     if (-not (Test-Path $folder)) {
