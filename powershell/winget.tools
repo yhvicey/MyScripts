@@ -1,3 +1,4 @@
+7zip.7zip
 Bruno.Bruno
 CrystalRich.LockHunter
 EclipseAdoptium.Temurin.8.JDK
@@ -14,10 +15,10 @@ Microsoft.DotNet.SDK.Preview
 Microsoft.OpenJDK.11
 Microsoft.OpenJDK.17
 Microsoft.OpenJDK.21
+Microsoft.PowerShell
 Microsoft.Sysinternals.Suite
 Microsoft.VisualStudioCode
+OpenJS.NodeJS.LTS
 Python.Python.3.13
 chrisant996.Clink
-OpenJS.NodeJS.LTS
-7zip.7zip
 voidtools.Everything

@@ -1,6 +1,6 @@
 param(
-    [switch]$SkipChocolatey = $false,
-    [switch]$SkipWinget = $false
+    [switch]$SkipWinget = $false,
+    [switch]$SkipChocolatey = $false
 )
 
-& "$PSScriptRoot/../../SetupTools.ps1" -SkipChocolatey:$SkipChocolatey -SkipWinget:$SkipWinget
+& "$PSScriptRoot/../../SetupTools.ps1" -SkipWinget:$SkipWinget -SkipChocolatey:$SkipChocolatey

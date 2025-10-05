@@ -12,6 +12,28 @@ if (-not $ToolsFolder) {
     exit;
 }
 
+if (-not $SkipWinget) {
+    #
+    # Winget
+    #
+
+    $wingetExe = (Get-Command "winget" -ErrorAction SilentlyContinue).Path;
+    if (Test-Path $wingetExe) {
+        # Install winget tools
+        foreach ($wingetToolInstallExp in (Get-Content "$PSScriptRoot/winget.tools")) {
+            $parts = $wingetToolInstallExp -split ',';
+            $wingetPackageId = $parts[0]
+            $additionalArgs = $parts[1]
+            $installExpression = "& $wingetExe install --accept-package-agreements --exact --id $wingetPackageId $additionalArgs";
+            Write-Host "Running: $installExpression"
+            Invoke-Expression $installExpression
+        }
+    }
+    else {
+        Write-Host "winget.exe not found, skipping install winget tools"
+    }
+}
+
 if (-not $SkipChocolatey) {
     #
     # Chocolatey
@@ -40,28 +62,6 @@ if (-not $SkipChocolatey) {
         $installExpression = "& $chocoExe upgrade --install-if-not-installed $chocoToolInstallExp";
         Write-Host "Running: $installExpression"
         Invoke-Expression $installExpression
-    }
-}
-
-if (-not $SkipWinget) {
-    #
-    # Winget
-    #
-
-    $wingetExe = (Get-Command "winget" -ErrorAction SilentlyContinue).Path;
-    if (Test-Path $wingetExe) {
-        # Install winget tools
-        foreach ($wingetToolInstallExp in (Get-Content "$PSScriptRoot/winget.tools")) {
-            $parts = $wingetToolInstallExp -split ',';
-            $wingetPackageId = $parts[0]
-            $additionalArgs = $parts[1]
-            $installExpression = "& $wingetExe install --accept-package-agreements --exact --id $wingetPackageId $additionalArgs";
-            Write-Host "Running: $installExpression"
-            Invoke-Expression $installExpression
-        }
-    }
-    else {
-        Write-Host "winget.exe not found, skipping install winget tools"
     }
 }
 
