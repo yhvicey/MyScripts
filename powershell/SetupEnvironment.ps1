@@ -11,10 +11,10 @@ if (-not $DevFolder) {
     $DevFolder = "D:/Dev";
 }
 $DevFolder = $DevFolder.TrimEnd("/").TrimEnd("\");
-[System.Environment]::SetEnvironmentVariable("DEV_HOME", $DevFolder, [System.EnvironmentVariableTarget]::User)
 if (-not (Test-Path $DevFolder)) {
     New-Item $DevFolder -ItemType Directory | Out-Null;
 }
+
 if (-not $ToolsFolder) {
     $ToolsFolder = Read-Host -Prompt "Input tools folder path [$HOME/Tools]";
 }
@@ -25,6 +25,8 @@ $ToolsFolder = $ToolsFolder.TrimEnd("/").TrimEnd("\");
 if (-not (Test-Path $ToolsFolder)) {
     New-Item $ToolsFolder -ItemType Directory | Out-Null;
 }
+
+$MyScriptsRoot = Resolve-Path "$PSScriptRoot/.."
 #endregion
 
 #region Setup powershell
@@ -32,16 +34,7 @@ $profileFolder = Split-Path $PROFILE -Parent
 if (-not (Test-Path $profileFolder)) {
     New-Item -Path $profileFolder -ItemType Directory -Force | Out-Null
 }
-$startupScript = "$profileFolder/Startup.ps1"
-$startupDoneFile = "$profileFolder/Startup.done"
-$MyScriptsRoot = Resolve-Path "$PSScriptRoot/.."
 # Install profile
-$startupScriptContent = Get-Content "$PSScriptRoot/Startup.ps1" -Raw;
-$startupScriptContent = $startupScriptContent.Replace("<MyScriptsRoot>", $MyScriptsRoot);
-$startupScriptContent = $startupScriptContent.Replace("<DevFolder>", $DevFolder);
-$startupScriptContent = $startupScriptContent.Replace("<ToolsFolder>", $ToolsFolder);
-$setupFlag = "MY_SCRIPTS_SETUP_DONE"
-$startupScriptContent | Out-File -NoNewline -Force $startupScript;
 if (-not $SkipInstallPhase) {
     if (-not (Get-PSRepository PSGallery -ErrorAction SilentlyContinue)) {
         Register-PSRepository -Default
@@ -93,24 +86,25 @@ if (-not $SkipInstallPhase) {
     }
 }
 # Setup profile
+$setupFlag = "MY_SCRIPTS_SETUP_DONE"
 if (Test-Path $PROFILE) {
     Get-Content $PROFILE | Where-Object { -not $_.Contains($setupFlag) } | Out-File -NoNewline -Force $PROFILE;
 }
 else {
     New-Item $PROFILE -ItemType File -Force;
 }
-Write-Output ". '$startupScript' # $setupFlag" >> $PROFILE;
-Push-Location $MyScriptsRoot
-try {
-    $repoVersion = git rev-parse master
-}
-catch {
-    $repoVersion = "ERROR_GETTING_VERSION"
-}
-finally {
-    Pop-Location
-}
-Write-Output $repoVersion > $startupDoneFile
+Write-Output ". '$MyScriptsRoot/powershell/Startup.ps1' # $setupFlag" >> $PROFILE;
+#endregion
+
+# Set environment variables
+[System.Environment]::SetEnvironmentVariable("DEV_HOME", $DevFolder, [System.EnvironmentVariableTarget]::User)
+[System.Environment]::SetEnvironmentVariable("TOOLS_HOME", $ToolsFolder, [System.EnvironmentVariableTarget]::User)
+[System.Environment]::SetEnvironmentVariable("MY_SCRIPTS_ROOT", $MyScriptsRoot, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("Workspace", $Workspace, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("Playground", $Playground, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GithubRepos", $GithubRepos, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("TempDirs", $TempDirs, [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("ToolsBinFolder", $ToolsBinFolder, [System.EnvironmentVariableTarget]::User)
 #endregion
 
 #region Post setup
@@ -132,10 +126,3 @@ if (-not (Test-Path $TempDirs)) {
 if (-not (Test-Path $ToolsBinFolder)) {
     New-Item $ToolsBinFolder -ItemType Directory | Out-Null;
 }
-# Set environment varibales
-[Environment]::SetEnvironmentVariable("Workspace", $Workspace, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("Playground", $Playground, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("GithubRepos", $GithubRepos, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("TempDirs", $TempDirs, [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("ToolsBinFolder", $ToolsBinFolder, [System.EnvironmentVariableTarget]::User)
-#endregion

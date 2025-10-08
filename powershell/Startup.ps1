@@ -1,11 +1,11 @@
 #region Global variables
 # Folders
-$global:MyScriptsRoot = "<MyScriptsRoot>";
-$global:DevFolder = "<DevFolder>";
+$global:MyScriptsRoot = "$env:MY_SCRIPTS_ROOT";
+$global:DevFolder = "$env:DEV_HOME";
 $global:Workspace = "$DevFolder/Workspace";
 $global:Playground = "$DevFolder/Playground";
 $global:GithubRepos = "$DevFolder/Github";
-$global:ToolsFolder = "<ToolsFolder>";
+$global:ToolsFolder = "$env:TOOLS_HOME";
 $global:ToolsBinFolder = "$ToolsFolder/bin";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:TempDirs = "$Desktop/tempDirs";

@@ -13,12 +13,13 @@ if ($Tool -in ("all", "snipaste")) {
         $snipasteZip = "$toolsBackupRoot/Snipaste-1.16.2-x86.zip"
         $snipasteInstallRoot = "$ToolsFolder/Snipaste"
         Expand-Archive $snipasteZip "$snipasteInstallRoot" -Force
-        Start-Process "$snipasteInstallRoot/Snipaste.exe"
 
         # Updating config
         $config = ReadIni $snipasteInstallRoot/config.ini
+        $config.General.start_on_boot = "true"
+        $config.Update.check_on_start = "false"
         $config.Hotkey = @{
-            snip          = "83886128, 112"
+            snip          = "`"83886128, 112`""
             hide          = "";
             snip_and_copy = "";
             switch        = "";
@@ -27,6 +28,7 @@ if ($Tool -in ("all", "snipaste")) {
         }
         WriteIni $config "$snipasteInstallRoot/config.ini"
 
+        Start-Process "$snipasteInstallRoot/Snipaste.exe"
         Write-Host "Done."
     }
     catch {
