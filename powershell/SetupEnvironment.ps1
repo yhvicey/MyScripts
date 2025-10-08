@@ -1,25 +1,35 @@
 #!/usr/bin/env pwsh
 param(
-    [switch]$SkipInstallPhase = $false
+    [switch]$SkipInstallPhase = $false,
+    [switch]$ReCollectInputs = $false
 )
 
+if (Test-Path "D:\") {
+    $eligibleDrive = "D:"
+}
+else {
+    $eligibleDrive = "C:"
+}
+
 #region Collect input
-if (-not $DevFolder) {
-    $DevFolder = Read-Host -Prompt "Input development folder path [D:/Dev]";
+$proposedDevFolder = (Resolve-Path "$eligibleDrive/Dev").Path
+if ($ReCollectInputs -or -not $DevFolder) {
+    $DevFolder = Read-Host -Prompt "Input development folder path [$proposedDevFolder]";
 }
 if (-not $DevFolder) {
-    $DevFolder = "D:/Dev";
+    $DevFolder = $proposedDevFolder;
 }
 $DevFolder = $DevFolder.TrimEnd("/").TrimEnd("\");
 if (-not (Test-Path $DevFolder)) {
     New-Item $DevFolder -ItemType Directory | Out-Null;
 }
 
-if (-not $ToolsFolder) {
-    $ToolsFolder = Read-Host -Prompt "Input tools folder path [$HOME/Tools]";
+$proposedToolsFolder = (Resolve-Path "$HOME/Tools").Path
+if ($ReCollectInputs -or -not $ToolsFolder) {
+    $ToolsFolder = Read-Host -Prompt "Input tools folder path [$proposedToolsFolder]";
 }
 if (-not $ToolsFolder) {
-    $ToolsFolder = "$HOME/Tools";
+    $ToolsFolder = $proposedToolsFolder;
 }
 $ToolsFolder = $ToolsFolder.TrimEnd("/").TrimEnd("\");
 if (-not (Test-Path $ToolsFolder)) {
