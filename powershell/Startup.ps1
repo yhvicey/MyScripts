@@ -14,25 +14,6 @@ $global:TempDirs = "$Desktop/tempDirs";
 $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 #endregion
 
-#region Version check
-$profileFolder = Split-Path $PROFILE -Parent
-$versionFile = "$profileFolder/Startup.done"
-if (Test-Path $versionFile) {
-    $currentVersion = [string](Get-Content $versionFile)
-}
-Push-Location $MyScriptsRoot
-try {
-    $repoVersion = git rev-parse master
-}
-catch {}
-finally {
-    Pop-Location
-}
-if ($repoVersion -ne $currentVersion) {
-    & "$MyScriptsRoot/powershell/SetupEnvironment.ps1" -SkipInstallPhase
-}
-#endregion
-
 #region Load scripts & modules
 . "$MyScriptsRoot/powershell/scripts/Core.ps1"
 $foldersToLoadScriptsFrom = @(
