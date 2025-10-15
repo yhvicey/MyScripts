@@ -4,15 +4,17 @@ param(
     [switch]$ReCollectInputs = $false
 )
 
-if (Test-Path "D:\") {
-    $eligibleDrive = "D:"
+$fixedVolumes = Get-Volume | Where-Object { $_.DriveType -eq 'Fixed' -and $_.DriveLetter -ne $null } | Select-Object -ExpandProperty DriveLetter | Sort-Object
+
+if ($fixedVolumes.Count -gt 1) {
+    $eligibleDrive = "$($fixedVolumes[1]):"
 }
 else {
-    $eligibleDrive = "C:"
+    $eligibleDrive = "$($fixedVolumes[0]):"
 }
 
 #region Collect input
-$proposedDevFolder = (Resolve-Path "$eligibleDrive/Dev").Path
+$proposedDevFolder = [System.IO.Path]::GetFullPath("$eligibleDrive/Dev")
 if ($ReCollectInputs -or -not $DevFolder) {
     $DevFolder = Read-Host -Prompt "Input development folder path [$proposedDevFolder]";
 }
@@ -24,7 +26,7 @@ if (-not (Test-Path $DevFolder)) {
     New-Item $DevFolder -ItemType Directory | Out-Null;
 }
 
-$proposedToolsFolder = (Resolve-Path "$HOME/Tools").Path
+$proposedToolsFolder = [System.IO.Path]::GetFullPath("$HOME/Tools")
 if ($ReCollectInputs -or -not $ToolsFolder) {
     $ToolsFolder = Read-Host -Prompt "Input tools folder path [$proposedToolsFolder]";
 }

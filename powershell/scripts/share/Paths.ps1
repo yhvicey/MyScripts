@@ -14,8 +14,11 @@ if ($env:SPARK_HOME) {
 }
 
 if (Get-Command python -ErrorAction SilentlyContinue) {
-    $scriptsRoot = python -c "import os,sysconfig;print(sysconfig.get_path('scripts',f'{os.name}_user'))"
-    AddToPath $scriptsRoot
+    try {
+        $scriptsRoot = python -c "import os,sysconfig;print(sysconfig.get_path('scripts',f'{os.name}_user'))"
+        AddToPath $scriptsRoot
+    }
+    catch {}
 }
 
 if (Test-Path "$env:PROGRAMFILES\JetBrains") {
