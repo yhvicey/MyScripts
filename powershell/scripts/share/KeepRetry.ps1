@@ -4,6 +4,10 @@ param(
 )
 
 do {
+    if ($CodeBlock -eq $null) {
+        $command = Get-History -Count 1 | Select-Object -ExpandProperty CommandLine
+        $CodeBlock = [scriptblock]::Create($command)
+    }
     & $CodeBlock
     $succeeded = $LASTEXITCODE -eq 0
     if (-not $succeeded) {
