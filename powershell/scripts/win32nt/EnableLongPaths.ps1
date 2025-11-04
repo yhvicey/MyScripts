@@ -7,6 +7,11 @@ if ($Revert) {
     if (Test-Path $regKey) {
         Set-ItemProperty $subRegKey -Name "LongPathsEnabled" -Value 0
     }
+
+    if (Get-Command -Name "git" -ErrorAction SilentlyContinue) {
+        git config --global core.longpaths false
+    }
+
     Write-Host "Done.";
 }
 else {
@@ -15,5 +20,10 @@ else {
         [void](New-Item -Path $regKey);
     }
     Set-ItemProperty $regKey -Name "LongPathsEnabled" -Value 1
+
+    if (Get-Command -Name "git" -ErrorAction SilentlyContinue) {
+        git config --global core.longpaths true
+    }
+
     Write-Host "Done.";
 }
