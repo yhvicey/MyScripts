@@ -23,14 +23,14 @@ if (Get-Command python -ErrorAction SilentlyContinue) {
 
 if (Test-Path "$env:PROGRAMFILES\JetBrains") {
     [array]$instances = Get-ChildItem "$env:PROGRAMFILES\JetBrains" -Directory | ForEach-Object {
-        @{
+        [PSCustomObject]@{
             FullName = $_.FullName
             Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
         }
     }
     if (Test-Path "${env:ProgramFiles(x86)}\JetBrains") {
         [array]$x86Instances = Get-ChildItem "${env:ProgramFiles(x86)}\JetBrains" -Directory | ForEach-Object {
-            @{
+            [PSCustomObject]@{
                 FullName = $_.FullName
                 Version  = [version]::Parse(($_.Name -replace "[a-z ]", ""))
             }
@@ -40,8 +40,11 @@ if (Test-Path "$env:PROGRAMFILES\JetBrains") {
         $x86Instances = @()
     }
     $instances += $x86Instances
-    $latestInstance = $instances | Sort-Object Version -Descending | Select-Object -First 1
-    AddToPath "$($latestInstance.FullName)\bin"
+    $global:instances = $instances
+    if ($instances.Count -ne 0) {
+        $latestInstance = ([array]$instances) | Sort-Object Version -Descending | Select-Object -First 1
+        AddToPath "$($latestInstance.FullName)\bin"
+    }
 }
 
 if (Test-Path "C:\msys64") {

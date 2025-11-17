@@ -18,7 +18,7 @@ if (-not $SkipWinget) {
     #
 
     $wingetExe = (Get-Command "winget" -ErrorAction SilentlyContinue).Path;
-    if (Test-Path $wingetExe) {
+    if (Test-Path $wingetExe -ErrorAction SilentlyContinue) {
         # Install winget tools
         foreach ($wingetToolInstallExp in (Get-Content "$PSScriptRoot/winget.tools")) {
             $parts = $wingetToolInstallExp -split ',';

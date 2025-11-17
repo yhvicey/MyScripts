@@ -3,7 +3,7 @@ AddToPath "$global:ToolsFolder\python3\Scripts";
 
 $vswhereCmd = Get-Command "vswhere" -ErrorAction SilentlyContinue
 if ($vswhereCmd) {
-    $installationPath = & $vswhereCmd.Source -all | Where-Object { $_ -match "^installationPath: .*" }
+    $installationPath = & $vswhereCmd.Source -latest | Where-Object { $_ -match "^installationPath: .*" }
     if (-not $installationPath) {
         Write-Debug "VS installation path not found"
         return
