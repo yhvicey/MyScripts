@@ -2,7 +2,8 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$RepoListPath,
     [string]$WorkingDirectory = (Get-Location).Path,
-    [switch]$IgnoreUncommittedChanges = $false
+    [switch]$IgnoreUncommittedChanges = $false,
+    [switch]$KeepRetry = $false
 )
 
 $repoList = Import-Csv -Path $RepoListPath
@@ -47,6 +48,14 @@ foreach ($repo in $repoList) {
     }
     else {
         Write-Host "Cloning repository '$($repo.Repository)' into folder '$localFolder'..."
-        git clone -b $repo.Branch $repoUrl $localFolder
+        if ($KeepRetry) {
+            $retryTimes = -1
+        }
+        else {
+            $retryTimes = 1
+        }
+        KeepRetry -MaxRetries $retryTimes -SilentlyContinue {
+            git clone -b $repo.Branch $repoUrl $localFolder
+        }
     }
 }
