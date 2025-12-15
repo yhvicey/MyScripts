@@ -6,7 +6,7 @@ param(
     [switch]$KeepRetry = $false
 )
 
-$repoList = Import-Csv -Path $RepoListPath
+$repoList = Import-Csv -Path $RepoListPath -Header Type,Org,Project,Repository,Branch,LocalFolder
 
 foreach ($repo in $repoList) {
     $localFolder = Join-Path -Path $WorkingDirectory -ChildPath $repo.LocalFolder

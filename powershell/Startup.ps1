@@ -5,10 +5,10 @@ $global:DevFolder = "$env:DEV_HOME";
 $global:Workspace = "$DevFolder/Workspace";
 $global:Playground = "$DevFolder/Playground";
 $global:GithubRepos = "$DevFolder/Github";
+$global:TempDirs = "$DevFolder/Temp";
 $global:ToolsFolder = "$env:TOOLS_HOME";
 $global:ToolsBinFolder = "$ToolsFolder/bin";
 $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
-$global:TempDirs = "$Desktop/tempDirs";
 
 # Others
 $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
