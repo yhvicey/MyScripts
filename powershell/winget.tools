@@ -17,6 +17,7 @@ Microsoft.OpenJDK.11
 Microsoft.OpenJDK.17
 Microsoft.OpenJDK.21
 Microsoft.PowerShell
+Microsoft.SQLServerManagementStudio
 Microsoft.Sysinternals.Suite
 Microsoft.VisualStudioCode
 OpenJS.NodeJS.LTS
