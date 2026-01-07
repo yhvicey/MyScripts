@@ -47,6 +47,10 @@ if (Test-Path "$env:PROGRAMFILES\JetBrains") {
     }
 }
 
-if (Test-Path "C:\msys64") {
+if (Test-Path "C:\msys64" -ErrorAction SilentlyContinue) {
     AddToPath "C:\msys64\usr\bin"
+}
+
+if (Test-Path "C:\Program Files\Graphviz" -ErrorAction SilentlyContinue) {
+    AddToPath "C:\Program Files\Graphviz\bin"
 }
