@@ -55,14 +55,14 @@ switch ($source) {
     }
     default {
         Write-Error "Unknown JDK source '$source'. Supported sources are: IDEA, Eclipse, Microsoft."
-        exit 1
+        return 1
     }
 }
 
 $jdkPath = Join-Path $root $JdkVersion
 if (-not (Test-Path $jdkPath)) {
     Write-Error "JDK version '$JdkVersion' not found under '$root'"
-    exit 1
+    return 1
 }
 
 $env:JAVA_HOME = $jdkPath

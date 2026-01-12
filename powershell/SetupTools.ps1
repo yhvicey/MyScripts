@@ -1,7 +1,19 @@
 param(
+    [switch]$SkipWinget = $false,
     [switch]$SkipChocolatey = $false,
-    [switch]$SkipWinget = $false
+    [switch]$EditWingetList = $false,
+    [switch]$EditChocolateyList = $false
 )
+
+if ($EditWingetList) {
+    code "$PSScriptRoot/winget.tools"
+    return;
+}
+
+if ($EditChocolateyList) {
+    code "$PSScriptRoot/choco.tools"
+    return;
+}
 
 $Script:ErrorActionPreference = "Stop"
 
@@ -9,7 +21,7 @@ EnsureAdminPrivileges;
 
 if (-not $ToolsFolder) {
     Write-Error "Tools folder not defined, run SetupEnvironment.ps1 first.";
-    exit;
+    return;
 }
 
 if (-not $SkipWinget) {
