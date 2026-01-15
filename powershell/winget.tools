@@ -3,13 +3,14 @@ Bruno.Bruno
 CrystalRich.LockHunter
 EclipseAdoptium.Temurin.8.JDK
 Graphviz.Graphviz
-JetBrains.IntelliJIDEA.Community,--uninstall-previous
+JetBrains.IntelliJIDEA,--uninstall-previous
 LocalSend.LocalSend
 MSYS2.MSYS2
 Microsoft.AzureCLI
 Microsoft.DotNet.Runtime.5
 Microsoft.DotNet.Runtime.7
 Microsoft.DotNet.Runtime.9
+Microsoft.DotNet.SDK.10
 Microsoft.DotNet.SDK.3_1
 Microsoft.DotNet.SDK.6
 Microsoft.DotNet.SDK.8
