@@ -21,7 +21,7 @@ Microsoft.OpenJDK.21
 Microsoft.PowerShell
 Microsoft.SQLServerManagementStudio
 Microsoft.Sysinternals.Suite
-Microsoft.VisualStudioCode
+Microsoft.VisualStudioCode,--override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
 OpenJS.NodeJS.LTS
 Python.Python.3.13
 chrisant996.Clink
