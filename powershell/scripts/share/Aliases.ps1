@@ -2,6 +2,7 @@ Set-Alias "c" "Push-Location";
 Set-Alias "b" "Pop-Location";
 Set-Alias "which" "Get-Command";
 
+Set-Alias "cc" "ClaudeCode";
 Set-Alias "cgb" "ClearGitBranches";
 Set-Alias "cf" "CollectFiles";
 Set-Alias "cs" "RunCsScript";
