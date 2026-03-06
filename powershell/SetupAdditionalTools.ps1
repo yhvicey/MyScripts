@@ -1,60 +1,74 @@
 param(
-    [ValidateSet("all", "snipaste", "hadoop")]
-    [Parameter(Mandatory)]
-    [string]$Tool
+  [ValidateSet("all", "snipaste", "hadoop")]
+  [Parameter(Mandatory)]
+  [string]$Tool
 )
 
 $toolsBackupRoot = "$HOME/OneDrive/Backup/Tools"
 
 if ($Tool -in ("all", "snipaste")) {
-    try {
-        Write-Host "Installing snipaste..."
+  try {
+    Write-Host "Installing snipaste..."
 
-        $snipasteZip = "$toolsBackupRoot/Snipaste-1.16.2-x86.zip"
-        $snipasteInstallRoot = "$ToolsFolder/Snipaste"
-        Expand-Archive $snipasteZip "$snipasteInstallRoot" -Force
+    $snipasteZip = "$toolsBackupRoot/Snipaste-1.16.2-x86.zip"
+    $snipasteInstallRoot = "$ToolsFolder/Snipaste"
+    Expand-Archive $snipasteZip "$snipasteInstallRoot" -Force
 
-        # Updating config
-        $config = ReadIni $snipasteInstallRoot/config.ini
-        $config.General.start_on_boot = "true"
-        $config.Update.check_on_start = "false"
-        $config.Hotkey = @{
-            snip          = "`"83886128, 112`""
-            hide          = "";
-            snip_and_copy = "";
-            switch        = "";
-            paste         = "";
-            delayed_snip  = "";
+    # Updating config
+    $configIni = "$snipasteInstallRoot/config.ini"
+    if (Test-Path $configIni) {
+      $config = ReadIni $snipasteInstallRoot/config.ini
+    }
+    else {
+      $config = @{
+        General = @{
+          startup_fix = "true"
+          first_run   = "false"
+          language    = "en"
         }
-        WriteIni $config "$snipasteInstallRoot/config.ini"
+        Update = @{}
+        Hotkey = @{}
+      }
+    }
+    $config.General.start_on_boot = "true"
+    $config.Update.check_on_start = "false"
+    $config.Hotkey = @{
+      snip          = "`"83886128, 112`""
+      hide          = "";
+      snip_and_copy = "";
+      switch        = "";
+      paste         = "";
+      delayed_snip  = "";
+    }
+    WriteIni $config "$snipasteInstallRoot/config.ini"
 
-        Start-Process "$snipasteInstallRoot/Snipaste.exe"
-        Write-Host "Done."
-    }
-    catch {
-        Write-Host "Failed to install snipaste: $_"
-    }
+    Start-Process "$snipasteInstallRoot/Snipaste.exe"
+    Write-Host "Done."
+  }
+  catch {
+    Write-Host "Failed to install snipaste: $_"
+  }
 }
 
 if ($Tool -in ("all", "hadoop")) {
-    try {
-        Write-Host "Installing hadoop..."
+  try {
+    Write-Host "Installing hadoop..."
 
-        & choco upgrade --install-if-not-installed --ignore-dependencies hadoop
-        $hadoopVersion = GetChocolateyPackageVersion "hadoop"
-        GithubClone https://github.com/cdarlint/winutils
+    & choco upgrade --install-if-not-installed --ignore-dependencies hadoop
+    $hadoopVersion = GetChocolateyPackageVersion "hadoop"
+    GithubClone https://github.com/cdarlint/winutils
 
-        Write-Host "Copying hadoop winutils..."
+    Write-Host "Copying hadoop winutils..."
 
-        $winUtilsSourceFolder = "$GithubRepos/cdarlint/winutils/hadoop-$hadoopVersion"
-        $localHadoopRoot = "C:/Hadoop"
-        $hadoopHome = "$localHadoopRoot/hadoop-$hadoopVersion"
-        Copy-Item "$winUtilsSourceFolder/bin/*" "$hadoopHome/bin" -Force
-        [Environment]::SetEnvironmentVariable("HADOOP_HOME", $hadoopHome, [EnvironmentVariableTarget]::Machine)
+    $winUtilsSourceFolder = "$GithubRepos/cdarlint/winutils/hadoop-$hadoopVersion"
+    $localHadoopRoot = "C:/Hadoop"
+    $hadoopHome = "$localHadoopRoot/hadoop-$hadoopVersion"
+    Copy-Item "$winUtilsSourceFolder/bin/*" "$hadoopHome/bin" -Force
+    [Environment]::SetEnvironmentVariable("HADOOP_HOME", $hadoopHome, [EnvironmentVariableTarget]::Machine)
 
-        Write-Host "Done."
-    }
-    catch {
-        Write-Host "Failed to install hadoop: $_"
-    }
+    Write-Host "Done."
+  }
+  catch {
+    Write-Host "Failed to install hadoop: $_"
+  }
 }
