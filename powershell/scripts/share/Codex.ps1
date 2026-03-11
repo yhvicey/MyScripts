@@ -5,8 +5,8 @@ param(
 $cxArgs = @()
 
 if (-not [string]::IsNullOrEmpty($Session)) {
-    $ccArgs += "resume"
-    $ccArgs += $Session
+    $cxArgs += "resume"
+    $cxArgs += $Session
 }
 
 $cxArgs += "--dangerously-bypass-approvals-and-sandbox"
