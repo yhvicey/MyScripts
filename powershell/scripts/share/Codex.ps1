@@ -2,13 +2,13 @@ param(
     [string]$Session = $null
 )
 
-$cxArgs = @(
-    "--dangerously-bypass-approvals-and-sandbox"
-)
+$cxArgs = @()
 
 if (-not [string]::IsNullOrEmpty($Session)) {
     $ccArgs += "resume"
     $ccArgs += $Session
 }
+
+$cxArgs += "--dangerously-bypass-approvals-and-sandbox"
 
 & codex $cxArgs
