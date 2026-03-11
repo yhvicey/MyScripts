@@ -11,4 +11,4 @@ if (-not [string]::IsNullOrEmpty($Session)) {
 
 $cxArgs += "--dangerously-bypass-approvals-and-sandbox"
 
-& codex $cxArgs
+Invoke-Expression "codex $cxArgs"
