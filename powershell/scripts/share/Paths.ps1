@@ -54,3 +54,7 @@ if (Test-Path "C:\msys64" -ErrorAction SilentlyContinue) {
 if (Test-Path "C:\Program Files\Graphviz" -ErrorAction SilentlyContinue) {
     AddToPath "C:\Program Files\Graphviz\bin"
 }
+
+if (Test-Path "$env:APPDATA\npm\" -ErrorAction SilentlyContinue) {
+    AddToPath "$env:APPDATA\npm\"
+}
