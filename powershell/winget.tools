@@ -3,8 +3,9 @@ Bruno.Bruno
 CrystalRich.LockHunter
 EclipseAdoptium.Temurin.8.JDK
 GitHub.Copilot
+GitHub.cli
 Graphviz.Graphviz
-JetBrains.IntelliJIDEA,--uninstall-previous
+JetBrains.IntelliJIDEA	--uninstall-previous
 LocalSend.LocalSend
 MSYS2.MSYS2
 Microsoft.AzureCLI
@@ -22,7 +23,7 @@ Microsoft.OpenJDK.21
 Microsoft.PowerShell
 Microsoft.SQLServerManagementStudio
 Microsoft.Sysinternals.Suite
-Microsoft.VisualStudioCode,--override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
+Microsoft.VisualStudioCode	--override '/SILENT /mergetasks="!runcode,addcontextmenufiles,addcontextmenufolders"'
 OpenJS.NodeJS.LTS
 Python.Python.3.13
 chrisant996.Clink

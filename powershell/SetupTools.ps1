@@ -1,9 +1,12 @@
 param(
+    [string]$SkipTo = $null,
     [switch]$SkipWinget = $false,
     [switch]$SkipChocolatey = $false,
     [switch]$EditWingetList = $false,
     [switch]$EditChocolateyList = $false
 )
+
+$SkipToParam = $SkipTo
 
 if ($EditWingetList) {
     code "$PSScriptRoot/winget.tools"
@@ -33,9 +36,18 @@ if (-not $SkipWinget) {
     if (Test-Path $wingetExe -ErrorAction SilentlyContinue) {
         # Install winget tools
         foreach ($wingetToolInstallExp in (Get-Content "$PSScriptRoot/winget.tools")) {
-            $parts = $wingetToolInstallExp -split ',';
+            $parts = $wingetToolInstallExp -split '\t';
             $wingetPackageId = $parts[0]
             $additionalArgs = $parts[1]
+
+            if (-not [string]::IsNullOrEmpty($SkipTo) -and $SkipTo -ne $wingetPackageId) {
+                Write-Host "Skipping $wingetPackageId, not reached skip-to package $SkipTo yet."
+                continue;
+            }
+            else {
+                $SkipTo = $null; # reset skip-to after reaching the package
+            }
+
             $installExpression = "& $wingetExe install --accept-package-agreements --exact --id $wingetPackageId $additionalArgs";
             Write-Host "Running: $installExpression"
             Invoke-Expression $installExpression
@@ -45,6 +57,8 @@ if (-not $SkipWinget) {
         Write-Host "winget.exe not found, skipping install winget tools"
     }
 }
+
+$SkipTo = $SkipToParam
 
 if (-not $SkipChocolatey) {
     #
@@ -71,7 +85,18 @@ if (-not $SkipChocolatey) {
 
     # Install chocolatey tools
     foreach ($chocoToolInstallExp in (Get-Content "$PSScriptRoot/choco.tools")) {
-        $installExpression = "& $chocoExe upgrade --install-if-not-installed $chocoToolInstallExp";
+        $parts = $chocoToolInstallExp -split '\t';
+        $chocoPackageId = $parts[0]
+
+        if (-not [string]::IsNullOrEmpty($SkipTo) -and $SkipTo -ne $chocoPackageId) {
+            Write-Host "Skipping $chocoPackageId, not reached skip-to package $SkipTo yet."
+            continue;
+        }
+        else {
+            $SkipTo = $null; # reset skip-to after reaching the package
+        }
+
+        $installExpression = "& $chocoExe upgrade --install-if-not-installed $chocoPackageId";
         Write-Host "Running: $installExpression"
         Invoke-Expression $installExpression
     }
