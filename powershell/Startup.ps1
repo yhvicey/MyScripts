@@ -1,3 +1,7 @@
+if ($env:ENABLE_VERBOSE_LOGGING_IN_STARTUP -eq "1") {
+    $VerbosePreference = "Continue";
+}
+
 #region Global variables
 # Folders
 $global:MyScriptsRoot = "$env:MY_SCRIPTS_ROOT";
