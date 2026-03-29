@@ -22,8 +22,21 @@ $global:Desktop = "$([Environment]::GetFolderPath("desktop"))";
 $global:CurrentOS = [System.Environment]::OSVersion.Platform.ToString();
 #endregion
 
+function PrintLoadTime([string]$name) {
+    $endTs = Get-Date;
+    $duration = ($endTs - $script:startTs).TotalMilliseconds;
+    if ($duration -gt 1000) {
+        Write-Warning "Loaded $name in $duration ms";
+    }
+    else {
+        Write-Debug "Loaded $name in $duration ms";
+    }
+}
+
 #region Load scripts & modules
+$script:startTs = Get-Date;
 . "$MyScriptsRoot/powershell/scripts/Core.ps1"
+PrintLoadTime "Core.ps1";
 $foldersToLoadScriptsFrom = @(
     "$MyScriptsRoot/powershell/scripts/share",
     "$MyScriptsRoot/powershell/scripts/$($CurrentOS.ToLower())"
@@ -44,12 +57,9 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
     foreach ($autoLoadScript in $autoLoadScripts) {
         if (Test-Path "$folder/$autoLoadScript") {
             try {
-                Write-Debug "Loading $autoLoadScript for $folder";
-                $startTs = Get-Date;
+                $script:startTs = Get-Date;
                 . "$folder/$autoLoadScript";
-                $endTs = Get-Date;
-                $duration = ($endTs - $startTs).TotalMilliseconds;
-                Write-Debug "Loaded $autoLoadScript for $folder in $duration ms";
+                PrintLoadTime "$autoLoadScript for $folder";
             }
             catch {
                 Write-Warning "Failed to load $autoLoadScript for $folder, error: $_";
@@ -58,21 +68,15 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
     }
 }
 foreach ($module in (Get-Content "$MyScriptsRoot/powershell/modules/powershell")) {
-    Write-Debug "Importing $module";
-    $startTs = Get-Date;
+    $script:startTs = Get-Date;
     Import-Module $module;
-    $endTs = Get-Date;
-    $duration = ($endTs - $startTs).TotalMilliseconds;
-    Write-Debug "Imported $module in $duration ms";
+    PrintLoadTime "module $module";
 }
 foreach ($module in (Get-ChildItem "$MyScriptsRoot/powershell/modules" -Directory)) {
     if (Test-Path "$($module.FullName)/Startup.ps1") {
-        Write-Debug "Importing $($module.Name)";
-        $startTs = Get-Date;
+        $script:startTs = Get-Date;
         & "$($module.FullName)/Startup.ps1"
-        $endTs = Get-Date;
-        $duration = ($endTs - $startTs).TotalMilliseconds;
-        Write-Debug "Imported $($module.Name) in $duration ms";
+        PrintLoadTime "module $($module.Name)";
     }
     else {
         Write-Debug "No startup file found for $module"
