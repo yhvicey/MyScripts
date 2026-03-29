@@ -1,4 +1,8 @@
+if ($env:ENABLE_DEBUG_LOGGING_IN_STARTUP -eq "1") {
+    $DebugPreference = "Continue";
+}
 if ($env:ENABLE_VERBOSE_LOGGING_IN_STARTUP -eq "1") {
+    $DebugPreference = "Continue";
     $VerbosePreference = "Continue";
 }
 
@@ -75,3 +79,6 @@ foreach ($module in (Get-ChildItem "$MyScriptsRoot/powershell/modules" -Director
     }
 }
 #endregion
+
+$DebugPreference = "SilentlyContinue";
+$VerbosePreference = "SilentlyContinue";
