@@ -41,7 +41,11 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
         if (Test-Path "$folder/$autoLoadScript") {
             try {
                 Write-Debug "Loading $autoLoadScript for $folder";
+                $startTs = Get-Date;
                 . "$folder/$autoLoadScript";
+                $endTs = Get-Date;
+                $duration = ($endTs - $startTs).TotalMilliseconds;
+                Write-Debug "Loaded $autoLoadScript for $folder in $duration ms";
             }
             catch {
                 Write-Warning "Failed to load $autoLoadScript for $folder, error: $_";
@@ -51,12 +55,20 @@ foreach ($folder in $foldersToLoadScriptsFrom) {
 }
 foreach ($module in (Get-Content "$MyScriptsRoot/powershell/modules/powershell")) {
     Write-Debug "Importing $module";
+    $startTs = Get-Date;
     Import-Module $module;
+    $endTs = Get-Date;
+    $duration = ($endTs - $startTs).TotalMilliseconds;
+    Write-Debug "Imported $module in $duration ms";
 }
 foreach ($module in (Get-ChildItem "$MyScriptsRoot/powershell/modules" -Directory)) {
     if (Test-Path "$($module.FullName)/Startup.ps1") {
         Write-Debug "Importing $($module.Name)";
+        $startTs = Get-Date;
         & "$($module.FullName)/Startup.ps1"
+        $endTs = Get-Date;
+        $duration = ($endTs - $startTs).TotalMilliseconds;
+        Write-Debug "Imported $($module.Name) in $duration ms";
     }
     else {
         Write-Debug "No startup file found for $module"
