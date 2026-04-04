@@ -9,6 +9,7 @@ Set-Alias "cf" "CollectFiles";
 Set-Alias "cs" "RunCsScript";
 Set-Alias "fsize" "GetFileSize";
 Set-Alias "sdu" "GetDiskUsage";
+Set-Alias "ghc" "LaunchGithubCopilot";
 Set-Alias "ghclone" "GithubClone";
 Set-Alias "ghcode" "GithubCode";
 Set-Alias "mycs" "RunMyCsScript";
