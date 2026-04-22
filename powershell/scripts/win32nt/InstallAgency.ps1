@@ -1,0 +1,1 @@
+Invoke-Expression "& { $(Invoke-RestMethod aka.ms/InstallTool.ps1)} agency"
