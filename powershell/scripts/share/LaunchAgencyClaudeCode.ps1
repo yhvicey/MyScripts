@@ -1,1 +1,1 @@
-agency claude -- --enable-auto-mode --permission-mode auto --claude-path claud
+agency claude --claude-path claude -- --enable-auto-mode --permission-mode auto
