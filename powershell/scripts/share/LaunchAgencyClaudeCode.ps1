@@ -1,0 +1,1 @@
+agency claude -- --enable-auto-mode --permission-mode auto
