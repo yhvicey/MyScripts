@@ -14,6 +14,7 @@ Set-Alias "ghc" "LaunchGithubCopilot";
 Set-Alias "ghclone" "GithubClone";
 Set-Alias "ghcode" "GithubCode";
 Set-Alias "mycs" "RunMyCsScript";
+Set-Alias "oc" "LaunchOpenCode";
 Set-Alias "reporoot" "GoToGitRepoRoot"
 Set-Alias "rr" "GoToGitRepoRoot"
 Set-Alias "kr" "KeepRetry"
