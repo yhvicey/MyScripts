@@ -8,6 +8,9 @@ if (-not [string]::IsNullOrEmpty($Session)) {
     $ghcArgs += "--resume=$Session"
 }
 
-$ghcArgs += @("--autopilot", "--allow-all")
+$ghcArgs += @(
+    #"--autopilot",
+    "--allow-all"
+)
 
 Invoke-Expression "copilot $ghcArgs"
