@@ -2,8 +2,10 @@ Set-Alias "c" "Push-Location";
 Set-Alias "b" "Pop-Location";
 Set-Alias "which" "Get-Command";
 
-Set-Alias "acc" "LaunchAgencyClaudeCode";
-Set-Alias "cc" "LaunchClaudeCode";
+#Set-Alias "acc" "LaunchAgencyClaudeCode";
+#Set-Alias "cc" "LaunchClaudeCode";
+Set-Alias "acc" "LaunchAgencyGithubCopilot";
+Set-Alias "cc" "LaunchGithubCopilot";
 Set-Alias "cx" "LaunchCodex";
 Set-Alias "cgb" "ClearGitBranches";
 Set-Alias "cf" "CollectFiles";
