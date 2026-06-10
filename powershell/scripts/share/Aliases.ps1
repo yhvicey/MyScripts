@@ -6,6 +6,7 @@ Set-Alias "which" "Get-Command";
 #Set-Alias "cc" "LaunchClaudeCode";
 Set-Alias "acc" "LaunchAgencyGithubCopilot";
 Set-Alias "cc" "LaunchGithubCopilot";
+Set-Alias "ci" "LaunchCodeInsiders";
 Set-Alias "cx" "LaunchCodex";
 Set-Alias "cgb" "ClearGitBranches";
 Set-Alias "cf" "CollectFiles";
